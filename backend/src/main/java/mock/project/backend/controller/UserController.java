@@ -1,0 +1,36 @@
+package mock.project.backend.controller;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import mock.project.backend.entities.Users;
+import mock.project.backend.response.ResponseTransfer;
+import mock.project.backend.services.UserService;
+
+@RestController
+@RequestMapping("/api/user")
+public class UserController {
+	
+	private Logger logger = Logger.getLogger(UserController.class);
+	
+	@Autowired
+	private UserService userService;
+	
+	@PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer checkLogin(@RequestBody Users user) {
+		logger.info("Checking idenity.......");
+		Users userData = userService.checkLogin(user);
+		if(userData !=null) {
+			return new ResponseTransfer("Login Successful!");
+		}
+		return new ResponseTransfer("Login Fail!");
+	}
+	
+	
+
+}
