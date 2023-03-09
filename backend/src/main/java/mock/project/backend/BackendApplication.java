@@ -56,11 +56,11 @@ public class BackendApplication {
 //			userRepo.save(new Users("admin","123","Admin","admin@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1",role));
 //			
 //			List<Sizes> sizes = new ArrayList<>();
-//			sizes.add(new Sizes(6));
-//			sizes.add(new Sizes(6.5));
-//			sizes.add(new Sizes(7));
-//			sizes.add(new Sizes(8.5));
-//			sizes.add(new Sizes(9));
+//			sizes.add(new Sizes(37));
+//			sizes.add(new Sizes(38));
+//			sizes.add(new Sizes(39));
+//			sizes.add(new Sizes(40));
+//			sizes.add(new Sizes(41));
 //			for(Sizes size: sizes) {
 //				sizeRepo.save(size);
 //			}

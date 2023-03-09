@@ -32,8 +32,8 @@ public class Users implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	
-	@Column(name="account", length = 50)
-	private String account;
+	@Column(name="user_name", length = 50)
+	private String userName;
 	
 	@Column(name="password", length = 50)
 	private String password;
@@ -67,10 +67,10 @@ public class Users implements Serializable {
 		super();
 	}
 	
-	public Users( String account, String password, String fullName, String email, String address,
-			String phone, Date dateofBirth, String image, Roles role) {
+	public Users(String userName, String password, String fullName, String email, String address, String phone,
+			Date dateofBirth, String image, Roles role) {
 		super();
-		this.account = account;
+		this.userName = userName;
 		this.password = password;
 		this.fullName = fullName;
 		this.email = email;
@@ -81,8 +81,6 @@ public class Users implements Serializable {
 		this.role = role;
 	}
 
-
-
 	public Integer getUserId() {
 		return userId;
 	}
@@ -91,12 +89,12 @@ public class Users implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getAccount() {
-		return account;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {
@@ -170,6 +168,5 @@ public class Users implements Serializable {
 	public void setOrders(Set<Orders> orders) {
 		this.orders = orders;
 	}
-	
- 
+
 }
