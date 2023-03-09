@@ -8,5 +8,5 @@ import mock.project.backend.entities.Users;
 @Repository(value="userRepo")
 public interface UserRepository  extends JpaRepository<Users, Integer>{
 	
-	Users findByAccountAndPassword(String account, String password);
+	Users findByUserNameAndPassword(String userName, String password);
 }
