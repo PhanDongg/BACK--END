@@ -23,7 +23,7 @@ public class UserController {
 	
 	@PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseTransfer checkLogin(@RequestBody Users user) {
-		logger.info("Checking idenity.......");
+		logger.info("Checking idenityyy.......");
 		Users userData = userService.checkLogin(user);
 		if(userData !=null) {
 			return new ResponseTransfer("Login Successful!");
