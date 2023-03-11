@@ -1,7 +1,6 @@
 package mock.project.backend.entities;
 
 import java.io.Serializable;
-import java.lang.management.MemoryType;
 import java.util.List;
 import java.util.Set;
 
@@ -19,15 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="product")
 public class Products implements Serializable{

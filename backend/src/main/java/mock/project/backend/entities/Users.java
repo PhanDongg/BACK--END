@@ -15,13 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="users")
 public class Users implements Serializable {
@@ -35,8 +28,8 @@ public class Users implements Serializable {
 	@Column(name="user_name", length = 50)
 	private String userName;
 	
-	@Column(name="password", length = 50)
-	private String password;
+	@Column(name = "encrypted_password", length = 128)
+	private String encryptedPassword;
 	
 	@Column(name="full_name",nullable = false, length = 50)
 	private String fullName;
@@ -56,10 +49,10 @@ public class Users implements Serializable {
 	@Column(name="image",length = 255)
 	private String image;
 	
-	@OneToOne
-	@JoinColumn(name="role_id",referencedColumnName="role_id")
-	private Roles role;
-	
+//	@OneToOne
+//	@JoinColumn(name="role_id",referencedColumnName="role_id")
+//	private Roles role;
+//	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="user")
 	private Set<Orders> orders;
 	
@@ -67,19 +60,32 @@ public class Users implements Serializable {
 		super();
 	}
 	
-	public Users(String userName, String password, String fullName, String email, String address, String phone,
-			Date dateofBirth, String image, Roles role) {
+public Users(String userName, String encryptedPassword, String fullName, String email, String address, String phone,
+			Date dateofBirth, String image) {
 		super();
 		this.userName = userName;
-		this.password = password;
+		this.encryptedPassword = encryptedPassword;
 		this.fullName = fullName;
 		this.email = email;
 		this.address = address;
 		this.phone = phone;
 		this.dateofBirth = dateofBirth;
 		this.image = image;
-		this.role = role;
 	}
+
+//	public Users(String userName, String encryptedPassword, String fullName, String email, String address, String phone,
+//			Date dateofBirth, String image, Roles role) {
+//		super();
+//		this.userName = userName;
+//		this.encryptedPassword = encryptedPassword;
+//		this.fullName = fullName;
+//		this.email = email;
+//		this.address = address;
+//		this.phone = phone;
+//		this.dateofBirth = dateofBirth;
+//		this.image = image;
+//		this.role = role;
+//	}
 
 	public Integer getUserId() {
 		return userId;
@@ -97,12 +103,12 @@ public class Users implements Serializable {
 		this.userName = userName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getEncryptedPassword() {
+		return encryptedPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
 	}
 
 	public String getFullName() {
@@ -153,13 +159,13 @@ public class Users implements Serializable {
 		this.image = image;
 	}
 
-	public Roles getRole() {
-		return role;
-	}
-
-	public void setRole(Roles role) {
-		this.role = role;
-	}
+//	public Roles getRole() {
+//		return role;
+//	}
+//
+//	public void setRole(Roles role) {
+//		this.role = role;
+//	}
 
 	public Set<Orders> getOrders() {
 		return orders;

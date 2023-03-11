@@ -6,17 +6,21 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import mock.project.backend.entities.Categories;
 import mock.project.backend.entities.Images;
+import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Roles;
 import mock.project.backend.entities.Sizes;
+import mock.project.backend.entities.UserRole;
 import mock.project.backend.entities.Users;
 import mock.project.backend.repository.CategoryRepository;
 import mock.project.backend.repository.ImageRepository;
@@ -24,6 +28,7 @@ import mock.project.backend.repository.ProductRepository;
 import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.repository.SizeRepository;
 import mock.project.backend.repository.UserRepository;
+import mock.project.backend.repository.UserRoleRepository;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -46,21 +51,31 @@ public class BackendApplication {
 	}
 	
 //	@Bean
-//	public CommandLineRunner Demo(UserRepository userRepo, RoleRepository roleRepo,CategoryRepository catRepo ,ProductRepository productRepo, ImageRepository imageRepo,SizeRepository sizeRepo) {
+//	public CommandLineRunner Demo(BCryptPasswordEncoder bCryptPasswordEncoder,UserRepository userRepo,UserRoleRepository userRoleRepo, RoleRepository roleRepo,CategoryRepository catRepo ,ProductRepository productRepo, ImageRepository imageRepo,SizeRepository sizeRepo) {
 //		return args ->{
 //			
 //			Roles role = new Roles("ROLE_ADMIN"); 
 //			Roles role1 = new Roles("ROLE_USER"); 
 //			roleRepo.save(role);
 //			roleRepo.save(role1);
-//			userRepo.save(new Users("admin","123","Admin","admin@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1",role));
+//			String password = bCryptPasswordEncoder.encode("123");
+//			Users user = new Users("admin",password,"Admin","admin@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1");
+//			Users user1 = new Users("user",password,"User","user@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1");
+//			userRepo.save(user);
+//			userRepo.save(user1);
 //			
+//			userRoleRepo.save(new UserRole(user,role));
+//			userRoleRepo.save(new UserRole(user,role1));
+//			userRoleRepo.save(new UserRole(user1,role));
+//					
 //			List<Sizes> sizes = new ArrayList<>();
 //			sizes.add(new Sizes(37));
 //			sizes.add(new Sizes(38));
 //			sizes.add(new Sizes(39));
 //			sizes.add(new Sizes(40));
 //			sizes.add(new Sizes(41));
+//			sizes.add(new Sizes(42));
+//			sizes.add(new Sizes(43));
 //			for(Sizes size: sizes) {
 //				sizeRepo.save(size);
 //			}
@@ -392,7 +407,6 @@ public class BackendApplication {
 //					}
 //				}
 //			}
-//			
 //			// set size to product and vice versa
 //			for(Sizes size: sizes) {
 //				size.setProducts(productadidas);
