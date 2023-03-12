@@ -49,6 +49,9 @@ public class Users implements Serializable {
 	@Column(name="image",length = 255)
 	private String image;
 	
+	@Column(name = "enabled")
+	private Boolean enabled;
+	
 //	@OneToOne
 //	@JoinColumn(name="role_id",referencedColumnName="role_id")
 //	private Roles role;
@@ -60,6 +63,20 @@ public class Users implements Serializable {
 		super();
 	}
 	
+public Users(String userName, String encryptedPassword, String fullName, String email, String address, String phone,
+			Date dateofBirth, String image, Boolean enabled) {
+		super();
+		this.userName = userName;
+		this.encryptedPassword = encryptedPassword;
+		this.fullName = fullName;
+		this.email = email;
+		this.address = address;
+		this.phone = phone;
+		this.dateofBirth = dateofBirth;
+		this.image = image;
+		this.enabled = enabled;
+	}
+
 public Users(String userName, String encryptedPassword, String fullName, String email, String address, String phone,
 			Date dateofBirth, String image) {
 		super();
@@ -173,6 +190,14 @@ public Users(String userName, String encryptedPassword, String fullName, String 
 
 	public void setOrders(Set<Orders> orders) {
 		this.orders = orders;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 }

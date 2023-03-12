@@ -61,6 +61,8 @@ public class BackendApplication {
 //			String password = bCryptPasswordEncoder.encode("123");
 //			Users user = new Users("admin",password,"Admin","admin@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1");
 //			Users user1 = new Users("user",password,"User","user@gmail.com","123HCMC","012388888",new Date(1-1-1111),"https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2020/10/meme-hai-huoc-moi-nhat-96.jpg?fit=564%2C20000&quality=95&ssl=1");
+//			user.setEnabled(true);
+//			user1.setEnabled(true);
 //			userRepo.save(user);
 //			userRepo.save(user1);
 //			

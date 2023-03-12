@@ -39,6 +39,7 @@ public class UserService {
 		user.setPhone(userDTO.getPhone());
 		user.setDateofBirth(userDTO.getDateofBirth());
 		user.setImage(userDTO.getImage());
+		user.setEnabled(true);
 		userRepo.save(user);
 		userRoleRepo.save(new UserRole(user,userDTO.getRole()));
 		return user;
