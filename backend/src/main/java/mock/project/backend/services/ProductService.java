@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import mock.project.backend.entities.Categories;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Sizes;
 import mock.project.backend.repository.ProductRepository;
@@ -94,6 +95,7 @@ public class ProductService {
 		String color = productRequest.getColor();
 		double size = productRequest.getSize();
 		String type = productRequest.getType();
+		String categoryName = productRequest.getCategoryName();
 		double startRangePrice = productRequest.getStartRangePrice();
 		double endRangePrice = productRequest.getEndRangePrice();
 
@@ -101,19 +103,19 @@ public class ProductService {
 			searchCriterias.add(cb.equal(root.get("color"), color));
 		}
 		if ((size != 0) && (size < 50)) {
-			
-			Join<Products, Sizes> productsJoin = root.join( "sizes" );
-			searchCriterias.add(cb.equal( productsJoin.get("size"), size));
+			Join<Products, Sizes> sizesJoin = root.join( "sizes" );
+			searchCriterias.add(cb.equal( sizesJoin.get("size"), size));
 		}
-
+		if ((categoryName != "" ) && (categoryName != null)) {
+			Join<Products, Categories> categoryJoin = root.join( "category" );
+			searchCriterias.add(cb.equal( categoryJoin.get("categoryName"), categoryName));
+		}
 		if ((type != "") && (type != null)) {
 			searchCriterias.add(cb.equal(root.get("type"), type));
 		}
-
 		if ((startRangePrice != 0) && (endRangePrice != 0) && (startRangePrice < endRangePrice)) {
 			searchCriterias.add(cb.between(root.get("price"), startRangePrice, endRangePrice));
 		}
-
 		cq.select(root).where(cb.and(searchCriterias.toArray(new Predicate[searchCriterias.size()])));
 
 		List<Products> products = entityManager.createQuery(cq).getResultList();

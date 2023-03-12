@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mock.project.backend.entities.Users;
+import mock.project.backend.request.UserDTO;
 import mock.project.backend.response.ResponseTransfer;
 import mock.project.backend.services.UserService;
 
@@ -21,16 +22,18 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseTransfer checkLogin(@RequestBody Users user) {
-		logger.info("Checking idenityyy.......");
-		Users userData = userService.checkLogin(user);
-		if(userData !=null) {
-			return new ResponseTransfer("Login Successful!");
-		}
-		return new ResponseTransfer("Login Fail!");
+//	@PostMapping(value="/login", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseTransfer checkLogin(@RequestBody Users user) {
+//		logger.info("Checking idenityyy.......");
+//		Users userData = userService.checkLogin(user);
+//		if(userData !=null) {
+//			return new ResponseTransfer("Login Successful!");
+//		}
+//		return new ResponseTransfer("Login Fail!");
+//	}
+	
+	@PostMapping(value="/register-user", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Users save(@RequestBody UserDTO user) throws Exception {
+		return userService.registerUserAccount(user);
 	}
-	
-	
-
 }
