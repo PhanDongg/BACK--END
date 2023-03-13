@@ -47,6 +47,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 			http
 				.authorizeRequests()
 					.antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+//				    .antMatchers("/userInfo").hasAnyAuthority("ROLE_USER","ROLE_ADMIN");
+//				    .antMatchers("/userInfo").hasAnyRole("ROLE_USER","ROLE_ADMIN");
 			http
 				.authorizeRequests()
 					.antMatchers("/user/**", "/register-user").access("hasRole('ROLE_ADMIN')");
@@ -56,14 +58,13 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 			http
 				.authorizeRequests()
 					.and().formLogin()
-	//Submit URL of login page.
-					.loginProcessingUrl("/j_spring_security_check")// Submit URL/action form
-					.loginPage("/login")//
-					.defaultSuccessUrl("/index")//
-					.failureUrl("/login?error=true")//
-					.usernameParameter("username")//
+					.loginProcessingUrl("/j_spring_security_check")
+					.loginPage("/login")
+					.defaultSuccessUrl("/homePage")
+					.failureUrl("/login?error=true")
+					.usernameParameter("username")
 					.passwordParameter("password")
-	//Config for Logout Page
+					
 					.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 					.and()
 		            .sessionManagement()
@@ -75,8 +76,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 		                .invalidSessionUrl("/login?invalid")
 		                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
-	//Config Remember Me.
-			http.authorizeRequests().and() //
+			http
+				.authorizeRequests().and() //
 					.rememberMe().tokenRepository(this.persistentTokenRepository()) //
 					.tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
 

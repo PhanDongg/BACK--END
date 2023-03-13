@@ -2,6 +2,7 @@ package mock.project.backend.services;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import mock.project.backend.entities.Users;
 import mock.project.backend.repository.UserRepository;
 import mock.project.backend.repository.UserRoleRepository;
 import mock.project.backend.request.UserDTO;
+import mock.project.backend.request.UserDTOReponse;
 
 @Service
 @Transactional
@@ -21,6 +23,9 @@ public class UserService {
 	
 	@Autowired
 	private UserRoleRepository userRoleRepo;
+	
+	@Autowired
+	private ModelMapper modelMap;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,6 +48,11 @@ public class UserService {
 		userRepo.save(user);
 		userRoleRepo.save(new UserRole(user,userDTO.getRole()));
 		return user;
+	}
+	
+	public UserDTOReponse findByUserName(String userName) {
+		UserDTOReponse userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTOReponse.class);
+		return userDTO;
 	}
 
 }

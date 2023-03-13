@@ -24,7 +24,7 @@ import mock.project.backend.response.ResponseTransfer;
 import mock.project.backend.services.ProductService;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/product")
 public class ProductController {
 	
 	private Logger logger = Logger.getLogger(ProductController.class);

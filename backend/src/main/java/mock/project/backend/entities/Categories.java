@@ -13,9 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+
 @Entity
 @Table(name="category")
 public class Categories implements Serializable {
