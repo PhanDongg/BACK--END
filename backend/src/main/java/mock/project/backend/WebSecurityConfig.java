@@ -88,12 +88,5 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 		db.setDataSource(dataSource);
 		return db;
 	}
-	@Bean
-	public ViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setPrefix("/WEB-INF/views/jsp/");
-		viewResolver.setSuffix(".jsp");
-		viewResolver.setViewClass(JstlView.class);
-		return viewResolver;
-	}
+	
 }

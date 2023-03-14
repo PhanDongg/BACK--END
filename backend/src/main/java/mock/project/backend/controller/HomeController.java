@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +17,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 import mock.project.backend.entities.User;
 import mock.project.backend.request.ProductDTO;
+import mock.project.backend.request.UserDTO;
 import mock.project.backend.request.UserDTOReponse;
 
 @Controller
@@ -44,7 +48,7 @@ public class HomeController {
 		model.addAttribute("user", new User());
 		return "login";
 	}
-
+	
 	@GetMapping("/homePage")
 	public String initIndex(Principal principal, Model model) {
 		logger.info(principal.getName());
@@ -94,14 +98,16 @@ public class HomeController {
 	@RequestMapping(value = "/username", method = RequestMethod.GET)
 	@ResponseBody
 	public String currentUserName(Principal principal) {
+		
 		return principal.getName();
 	}
-
-	@RequestMapping(value = "/username-2", method = RequestMethod.GET)
+	@PostMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String currentUserName(Authentication authentication) {
-
-		return authentication.getName();
+	public UserDTO currentUserName(@ModelAttribute("user") UserDTO user) {
+		String url = productApi+ "/register-user";
+		ResponseEntity<ProductDTO[]> response = restTemplate.getForEntity(url, ProductDTO[].class);
+		ProductDTO[] listProducts = response.getBody();
+		return user;
 
 	}
 
