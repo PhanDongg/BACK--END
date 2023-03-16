@@ -29,7 +29,7 @@ public class Roles implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer roleId;
 	
-	@Column(name="role_name",nullable = false, length = 50)
+	@Column(name="role_name", length = 50)
 	private String roleName;
 	
 //	@OneToOne(cascade = CascadeType.ALL,mappedBy="role")

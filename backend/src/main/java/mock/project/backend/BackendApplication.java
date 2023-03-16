@@ -20,6 +20,7 @@ import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Roles;
 import mock.project.backend.entities.Sizes;
+import mock.project.backend.entities.Status;
 import mock.project.backend.entities.UserRole;
 import mock.project.backend.entities.Users;
 import mock.project.backend.repository.CategoryRepository;
@@ -27,6 +28,7 @@ import mock.project.backend.repository.ImageRepository;
 import mock.project.backend.repository.ProductRepository;
 import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.repository.SizeRepository;
+import mock.project.backend.repository.StatusRepository;
 import mock.project.backend.repository.UserRepository;
 import mock.project.backend.repository.UserRoleRepository;
 
@@ -42,16 +44,16 @@ public class BackendApplication {
 		return new RestTemplate();
 	}
 	
-	@Bean
-	public ModelMapper modelMapper() {
-		// Tạo object và cấu hình
-		ModelMapper modelMapper = new ModelMapper();
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		return modelMapper;
-	}
-	
 //	@Bean
-//	public CommandLineRunner Demo(BCryptPasswordEncoder bCryptPasswordEncoder,UserRepository userRepo,UserRoleRepository userRoleRepo, RoleRepository roleRepo,CategoryRepository catRepo ,ProductRepository productRepo, ImageRepository imageRepo,SizeRepository sizeRepo) {
+//	public ModelMapper modelMapper() {
+//		// Tạo object và cấu hình
+//		ModelMapper modelMapper = new ModelMapper();
+//		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//		return modelMapper;
+//	}
+//	
+//	@Bean
+//	public CommandLineRunner Demo(BCryptPasswordEncoder bCryptPasswordEncoder,StatusRepository statusRepo,UserRepository userRepo,UserRoleRepository userRoleRepo, RoleRepository roleRepo,CategoryRepository catRepo ,ProductRepository productRepo, ImageRepository imageRepo,SizeRepository sizeRepo) {
 //		return args ->{
 //			
 //			Roles role = new Roles("ROLE_ADMIN"); 
@@ -82,6 +84,15 @@ public class BackendApplication {
 //				sizeRepo.save(size);
 //			}
 //			
+//			List<Status> status = new ArrayList<>();
+//			status.add(new Status("Mới"));
+//			status.add(new Status("Đang xử lí"));
+//			status.add(new Status("Đang giao hàng"));
+//			status.add(new Status("Đã giao"));
+//			for(Status stt: status) {
+//				statusRepo.save(stt);
+//			}
+//			
 //			Categories adidas = new Categories("Giày Adidas"); 
 //			Categories puma = new Categories("Giày Puma"); 
 //			Categories nike = new Categories("Giày Nike"); 
@@ -92,52 +103,52 @@ public class BackendApplication {
 //			catRepo.save(reebok);
 //			
 //			List<Products> productadidas = new ArrayList<>();
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Ultraboost Srdy Tyo FX0031",100.0,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Supernova M H04482",99.9,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Supernova 2 M GW9092",152.0,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Sl20.3 M GY0559",135.0,"Good","Nữ","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas EQ21 Run GZ6869",167.0,"Good","Nữ","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Nebzed GX4284",999.0,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Response GW6565",97.0,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Response GW6645",80.0,"Good","Nữ","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Duramo SL GV7124",661.0,"Good","Nam","Black",100,"Adidas",adidas));
-//			productadidas.add(new Products("Giày Chạy Bộ Adidas Pureboost Jet GW8591",99.0,"Good","Nữ","Black",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Ultraboost Srdy Tyo FX0031",3000000,"Sneaker","Nam","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Supernova M H04482",5890000,"Sneaker","Nam","Đen",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Supernova 2 M GW9092",6000000,"Sneaker","Nam","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Sl20.3 M GY0559",12000000,"Sneaker","Nữ","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas EQ21 Run GZ6869",8900000,"Sneaker","Nữ","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Nebzed GX4284",1110000,"Sneaker","Nam","Đen",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Response GW6565",20000000,"Sneaker","Nam","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Response GW6645",5500000,"Sneaker","Nữ","Đen",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Duramo SL GV7124",7400000,"Sneaker","Nam","Trắng",100,"Adidas",adidas));
+//			productadidas.add(new Products("Giày Chạy Bộ Adidas Pureboost Jet GW8591",8000000,"Sneaker","Nữ","Đen",100,"Adidas",adidas));
 //			
 //			List<Products> productPuma = new ArrayList<>();
-//			productPuma.add(new Products("Giày Tập Luyện Puma Xetic Halflife 19",99.0,"Good","Unisex","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Lifestyle Puma Intl 375149-01",100.0,"Good","Nữ","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Lifestyle Puma Rs Z 383589-01",99.9,"Good","Nam","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Lifestyle Puma Trc 383104-01",152.0,"Good","Nam","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Lifestyle Puma Rs X3 368845-03",135.0,"Good","Unisex","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Bóng Rổ Puma Slipstream Mix 388635-03",167.0,"Good","Unisex","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Bóng Rổ Puma Triple Mid 376451-01",999.0,"Good","Nam","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Lifestyle Puma X Ray 373108-16",97.0,"Good","Unisex","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Bóng Rổ Puma Rebound 374765-19",80.0,"Good","Nữ","Black",100,"Puma",puma));
-//			productPuma.add(new Products("Giày Chạy Bộ Puma X-Ray 384639-11",661.0,"Good","Unisex","Black",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Tập Luyện Puma Xetic Halflife 19",2300000,"Sneaker","Unisex","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Lifestyle Puma Intl 375149-01",5890000,"Sneaker","Nữ","Trắng",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Lifestyle Puma Rs Z 383589-01",6000000,"Sneaker","Nam","Trắng",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Lifestyle Puma Trc 383104-01",6000000,"Sneaker","Nam","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Lifestyle Puma Rs X3 368845-03",19000000,"Sneaker","Unisex","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Bóng Rổ Puma Slipstream Mix 388635-03",2300000,"Sneaker","Unisex","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Bóng Rổ Puma Triple Mid 376451-01",3300000,"Sneaker","Nam","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Lifestyle Puma X Ray 373108-16",2300000,"Sneaker","Unisex","Đen",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Bóng Rổ Puma Rebound 374765-19",1000000,"Sneaker","Nữ","Trắng",100,"Puma",puma));
+//			productPuma.add(new Products("Giày Chạy Bộ Puma X-Ray 384639-11",3300000,"Sneaker","Unisex","Trắng",100,"Puma",puma));
 //			
 //			List<Products> productnike = new ArrayList<>();
-//			productnike.add(new Products("Giày Lifestyle Nike Court Legacy Cnvs CW6539-100",100.0,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Bóng Rổ Nike Defyallday DJ1196-101",99.9,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Chạy Bộ Nike Downshifter 12 DD9293-101",152.0,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Lifestyle Nike Blazer Low 77 Se Nn DM0210-100",135.0,"Good","Nữ","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Lifestyle Nike Air Max 97 DM0027-001",167.0,"Good","Nữ","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Lifestyle Nike Blazer Mid Pro Club DQ7673-100",999.0,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Lifestyle Nike Blazer Mid Pro Club DQ7673-001",97.0,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Chạy Bộ Nike Air Zoom Pegasus 39 DH4071-102",80.0,"Good","Nữ","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Bóng Rổ Nike M Metcon 8 Flyease DO9388-300",661.0,"Good","Nam","Black",100,"Nike",nike));
-//			productnike.add(new Products("Giày Lifestyle Nike Air Max 90 DQ4071-100",99.0,"Good","Nữ","Black",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Court Legacy Cnvs CW6539-100",19000000,"Sneaker","Nam","Trắng",100,"Nike",nike));
+//			productnike.add(new Products("Giày Bóng Rổ Nike Defyallday DJ1196-101",6000000,"Sneaker","Nam","Đen",100,"Nike",nike));
+//			productnike.add(new Products("Giày Chạy Bộ Nike Downshifter 12 DD9293-101",2000000,"Sneaker","Nam","Đen",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Blazer Low 77 Se Nn DM0210-100",3300000,"Sneaker","Nữ","Trắng",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Air Max 97 DM0027-001",1110000,"Sneaker","Nữ","Trắng",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Blazer Mid Pro Club DQ7673-100",5000000,"Sneaker","Nam","Đen",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Blazer Mid Pro Club DQ7673-001",10000000,"Sneaker","Nam","Đen",100,"Nike",nike));
+//			productnike.add(new Products("Giày Chạy Bộ Nike Air Zoom Pegasus 39 DH4071-102",12300000,"Sneaker","Nữ","Trắng",100,"Nike",nike));
+//			productnike.add(new Products("Giày Bóng Rổ Nike M Metcon 8 Flyease DO9388-300",15000000,"Sneaker","Nam","Trắng",100,"Nike",nike));
+//			productnike.add(new Products("Giày Lifestyle Nike Air Max 90 DQ4071-100",1110000,"Sneaker","Nữ","Đen",100,"Nike",nike));
 //			
 //			List<Products> productreebok= new ArrayList<>();
-//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge Vintage FW4862",100.0,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Chạy Bộ Reebok Cl Legacy Az GY1552",99.9,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Tập Luyện Reebok Hiit Training 2.0 GW8519",152.0,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Tennis Reebok Club C 85 GZ3656",135.0,"Good","Nữ","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Tennis Reebok Royal Techque T Ce GX3514",167.0,"Good","Nữ","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge Mu EG9270",999.0,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Chạy Bộ Reebok Turbo Restyle GW7830",97.0,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge GX1702",80.0,"Good","Nữ","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Chạy Bộ Reebok Rider V GZ3109",661.0,"Good","Nam","Black",100,"Reebok",reebok));
-//			productreebok.add(new Products("Giày Chạy Bộ Reebok Rider V GZ3110",99.0,"Good","Nữ","Black",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge Vintage FW4862",3300000,"Sneaker","Nam","Trắng",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Chạy Bộ Reebok Cl Legacy Az GY1552",5500000,"Sneaker","Nam","Đen",100,"Trắng",reebok));
+//			productreebok.add(new Products("Giày Tập Luyện Reebok Hiit Training 2.0 GW8519",6100000,"Sneaker","Nam","Trắng",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Tennis Reebok Club C 85 GZ3656",2000000,"Sneaker","Nữ","Đen",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Tennis Reebok Royal Techque T Ce GX3514",3700000,"Sneaker","Nữ","Đen",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge Mu EG9270",6100000,"Sneaker","Nam","Đen",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Chạy Bộ Reebok Turbo Restyle GW7830",6100000,"Sneaker","Nam","Trắng",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Tennis Reebok Club C Revenge GX1702",6100000,"Sneaker","Nữ","Đen",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Chạy Bộ Reebok Rider V GZ3109",9990000,"Sneaker","Nam","Đen",100,"Reebok",reebok));
+//			productreebok.add(new Products("Giày Chạy Bộ Reebok Rider V GZ3110",15000000,"Sneaker","Nữ","Trắng",100,"Reebok",reebok));
 //			
 //			List<Images> imageAdidas= new ArrayList<>();
 //			imageAdidas.add(new Images("https://cdn.tgdd.vn/Products/Images/9980/269219/adidas-ultraboost-srdy-tyo-fx0031-1.jpg"));
@@ -349,6 +360,7 @@ public class BackendApplication {
 //			//set image to product and vice versa
 //			int x =0;
 //			for(Products product: productadidas) {
+//				product.setDate(new Date(1-1-2017));
 //				productRepo.save(product);
 //				for(int i=x;i<imageAdidas.size();i++) {
 //					imageAdidas.get(i).setProduct(product);
@@ -364,6 +376,7 @@ public class BackendApplication {
 //				}
 //			}
 //			for(Products product: productPuma) {
+//				product.setDate(new Date(1-1-2017));
 //				productRepo.save(product);
 //				for(int i=x;i<imagePuma.size();i++) {
 //					imagePuma.get(i).setProduct(product);
@@ -379,6 +392,7 @@ public class BackendApplication {
 //				}
 //			}
 //			for(Products product: productnike) {
+//				product.setDate(new Date(1-1-2017));
 //				productRepo.save(product);
 //				for(int i=x;i<imageNike.size();i++) {
 //					imageNike.get(i).setProduct(product);
@@ -395,6 +409,7 @@ public class BackendApplication {
 //			}
 //			
 //			for(Products product: productreebok) {
+//				product.setDate(new Date(1-1-2017));
 //				productRepo.save(product);
 //				for(int i=x;i<imageReebok.size();i++) {
 //					imageReebok.get(i).setProduct(product);

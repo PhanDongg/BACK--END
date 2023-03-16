@@ -31,19 +31,19 @@ public class Users implements Serializable {
 	@Column(name = "encrypted_password", length = 128)
 	private String encryptedPassword;
 	
-	@Column(name="full_name",nullable = false, length = 50)
+	@Column(name="full_name", length = 50)
 	private String fullName;
 	
-	@Column(name="email",nullable = false, length = 255)
+	@Column(name="email", length = 255)
 	private String email;
 	
-	@Column(name="address",nullable = false, length = 50)
+	@Column(name="address", length = 50)
 	private String address;
 	
-	@Column(name="phone",nullable = false, length = 25)
+	@Column(name="phone", length = 25)
 	private String phone;
 	
-	@Column(name="date_of_birth",nullable = false)
+	@Column(name="date_of_birth")
 	private Date dateofBirth;
 	
 	@Column(name="image",length = 255)
