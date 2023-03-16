@@ -2,6 +2,7 @@ package mock.project.backend;
 
 import javax.sql.DataSource;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -43,7 +44,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 			
 			http
 				.authorizeRequests()
-					.antMatchers("/", "/login", "/logout").permitAll();
+					.antMatchers("/", "/login", "/logout", "/home").permitAll();
 			http
 				.authorizeRequests()
 					.antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
@@ -82,11 +83,17 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter{
 					.tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
 
 		}
+	
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
 		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
 		db.setDataSource(dataSource);
 		return db;
 	}
+	
+	@Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 	
 }
