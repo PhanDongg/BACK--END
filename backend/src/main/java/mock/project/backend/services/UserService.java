@@ -1,16 +1,23 @@
 package mock.project.backend.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import mock.project.backend.entities.Products;
 import mock.project.backend.entities.UserRole;
 import mock.project.backend.entities.Users;
 import mock.project.backend.repository.UserRepository;
 import mock.project.backend.repository.UserRoleRepository;
+import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.UserDTO;
 import mock.project.backend.request.UserDTOReponse;
 
@@ -54,5 +61,18 @@ public class UserService {
 		UserDTOReponse userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTOReponse.class);
 		return userDTO;
 	}
+	
+	public List<UserDTO> findAllUser(Pageable pageable) {
+		Page<Users> users = userRepo.findAll(pageable);
+		List<UserDTO> userDTOs = new ArrayList<>();
+		for (Users user : users) {
+			UserDTO userDTO = modelMap.map(user, UserDTO.class);
+			userDTOs.add(userDTO);
+		}
+		return userDTOs;
+
+	}
+	
+	
 
 }

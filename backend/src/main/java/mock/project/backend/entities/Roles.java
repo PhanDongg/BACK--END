@@ -15,9 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="role")
 public class Roles implements Serializable{
@@ -35,9 +32,6 @@ public class Roles implements Serializable{
 //	@OneToOne(cascade = CascadeType.ALL,mappedBy="role")
 //	private Users user;
 	
-	public Roles() {
-		super();
-	}
 	
 	public Roles(String roleName) {
 		super();
