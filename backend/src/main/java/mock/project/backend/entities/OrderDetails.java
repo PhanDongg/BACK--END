@@ -22,7 +22,7 @@ public class OrderDetails implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderDetailId;
 	
-	@Column(name="quantity",nullable = false, length = 50)
+	@Column(name="quantity", length = 50, columnDefinition = "nvarchar(50)")
 	private int quantity;
 	
 	@ManyToOne
