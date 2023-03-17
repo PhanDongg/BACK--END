@@ -37,9 +37,6 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-//	public Users checkLogin(final Users user) {
-//		return userRepo.findByUserNameAndPassword(user.getUserName(), user.getEncryptedPassword());
-//	}
 		
 	public Users registerUserAccount(UserDTO userDTO) throws Exception {
 		Users user = new Users();
