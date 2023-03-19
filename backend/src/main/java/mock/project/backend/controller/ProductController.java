@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mock.project.backend.entities.Products;
+import mock.project.backend.request.CategoryDTO;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.ProductRequest;
+import mock.project.backend.request.SizeDTO;
 import mock.project.backend.response.ResponseTransfer;
+import mock.project.backend.services.CategoryService;
 import mock.project.backend.services.ProductService;
+import mock.project.backend.services.SizeService;
 
 @RestController
 @RequestMapping("/api/product")
@@ -31,6 +35,12 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private SizeService sizeService;
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	//list product by categoryID
 //	@GetMapping(value = "/products/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,10 +58,10 @@ public class ProductController {
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProduct(@RequestParam(name="page",required = false) Integer pageIndex) {
 		if (pageIndex == null || pageIndex == 0) {
-			Pageable pageable = PageRequest.of(0, 5);
+			Pageable pageable = PageRequest.of(0, 7);
 			return ResponseEntity.ok(productService.findAllProduct(pageable));
 		}
-		Pageable pageable = PageRequest.of(pageIndex, 5);
+		Pageable pageable = PageRequest.of(pageIndex, 7);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
 	}
 	
@@ -59,6 +69,17 @@ public class ProductController {
 	@GetMapping(value="/search",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> findProductBySearch(@RequestParam("searchField")  String searchField ){
 		return ResponseEntity.ok(productService.findPoductBySearch(searchField));
+	}
+	
+	//list categories
+	@GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<CategoryDTO>> finAllCategory() {
+			return ResponseEntity.ok(categoryService.findAllCategory());
+	}
+	//list sizes
+	@GetMapping(value = "/sizes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<SizeDTO>> findAllSize() {
+			return ResponseEntity.ok(sizeService.findAllSizes());
 	}
 	
 	//search product by filter
@@ -93,7 +114,7 @@ public class ProductController {
 	@GetMapping(value="/price",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProductPriceAsc(@RequestParam("sort") String sort,@RequestParam("page")  Integer pageIndex){
 		if (sort == "ASC" && pageIndex == null || pageIndex == 0 ) {
-			Pageable sortedByPriceDesc =  PageRequest.of(0, 5, Sort.by("price").ascending());
+			Pageable sortedByPriceDesc =  PageRequest.of(0, 7, Sort.by("price").ascending());
 			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
 		}
 		if (sort == "ASC" && pageIndex != 0 ) {

@@ -1,6 +1,7 @@
 package mock.project.backend.request;
 
 public class ProductRequest {
+	
 	private	String categoryName;
 	private String color;
 	private  double size;
