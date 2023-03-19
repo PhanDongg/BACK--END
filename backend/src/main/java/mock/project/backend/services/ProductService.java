@@ -46,7 +46,6 @@ public class ProductService {
 		for (Products product : productByBrand) {
 			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
 			productDTOs.add(producctDTO);
-
 		}
 		return productDTOs;
 

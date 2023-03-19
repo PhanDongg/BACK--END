@@ -1,4 +1,4 @@
-package mock.project.backend.entities;
+package mock.project.backend.request;
 
 public class User {
 	private String username;

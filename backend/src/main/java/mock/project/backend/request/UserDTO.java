@@ -36,7 +36,7 @@ public class UserDTO {
 	@Size(min =10 , max= 10,message = "Đủ 10 số nha")
 	private String phone;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 //	@JsonFormat(pattern = "MM/dd/yyyy")
 	private Date dateofBirth;
 	

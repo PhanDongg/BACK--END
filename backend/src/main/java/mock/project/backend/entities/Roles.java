@@ -32,12 +32,6 @@ public class Roles implements Serializable{
 //	@OneToOne(cascade = CascadeType.ALL,mappedBy="role")
 //	private Users user;
 	
-<<<<<<< HEAD
-//	public Roles() {
-//		super();
-//	}
-=======
->>>>>>> 459bd46e06ad81af3ed3b385f3227067fbe851b6
 	
 	public Roles(String roleName) {
 		super();
