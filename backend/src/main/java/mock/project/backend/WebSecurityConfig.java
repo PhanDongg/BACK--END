@@ -1,5 +1,14 @@
 package mock.project.backend;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import javax.sql.DataSource;
+
+import org.modelmapper.ModelMapper;
+=======
+>>>>>>> 5325154fe18fd0a673e0d6f5e31a890e3dc110d9
+>>>>>>> 30b0fd0094193df9bdac90e5b3cb819a7dacc156
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,11 +51,58 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return bCryptPasswordEncoder;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+			http.csrf().disable();
+			
+			http
+				.authorizeRequests()
+					.antMatchers("/", "/login", "/logout", "/home").permitAll();
+			http
+				.authorizeRequests()
+					.antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+//				    .antMatchers("/userInfo").hasAnyAuthority("ROLE_USER","ROLE_ADMIN");
+//				    .antMatchers("/userInfo").hasAnyRole("ROLE_USER","ROLE_ADMIN");
+			http
+				.authorizeRequests()
+					.antMatchers("/user/**", "/register-user").access("hasRole('ROLE_ADMIN')");
+			http
+				.authorizeRequests()
+					.and().exceptionHandling().accessDeniedPage("/403");
+			http
+				.authorizeRequests()
+					.and().formLogin()
+					.loginProcessingUrl("/j_spring_security_check")
+					.loginPage("/login")
+					.defaultSuccessUrl("/homePage")
+					.failureUrl("/login?error=true")
+					.usernameParameter("username")
+					.passwordParameter("password")
+					
+					.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+					.and()
+		            .sessionManagement()
+		                .sessionFixation().newSession()
+		                .maximumSessions(1)
+		                .maxSessionsPreventsLogin(true)
+		                .expiredUrl("/login?expired")
+		                .and()
+		                .invalidSessionUrl("/login?invalid")
+		                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+=======
+>>>>>>> 30b0fd0094193df9bdac90e5b3cb819a7dacc156
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+<<<<<<< HEAD
+=======
+>>>>>>> 5325154fe18fd0a673e0d6f5e31a890e3dc110d9
+>>>>>>> 30b0fd0094193df9bdac90e5b3cb819a7dacc156
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -63,6 +119,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+<<<<<<< HEAD
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
+=======
+<<<<<<< HEAD
+		}
+	
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+		db.setDataSource(dataSource);
+		return db;
+	}
+	
+	@Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
+	
+=======
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+>>>>>>> 5325154fe18fd0a673e0d6f5e31a890e3dc110d9
+}
+>>>>>>> 30b0fd0094193df9bdac90e5b3cb819a7dacc156
