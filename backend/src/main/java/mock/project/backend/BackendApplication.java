@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import mock.project.backend.entities.Categories;
 import mock.project.backend.entities.Images;
+import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Roles;
 import mock.project.backend.entities.Sizes;
@@ -25,6 +26,7 @@ import mock.project.backend.entities.Users;
 import mock.project.backend.repository.CategoryRepository;
 import mock.project.backend.repository.ImageRepository;
 import mock.project.backend.repository.ProductRepository;
+import mock.project.backend.repository.ProductSizeRepository;
 import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.repository.SizeRepository;
 import mock.project.backend.repository.StatusRepository;
@@ -47,6 +49,5 @@ public class BackendApplication {
 	    public ModelMapper modelMapper() {
 	        return new ModelMapper();
 	    }
-
-		
+	 
 }

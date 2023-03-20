@@ -40,5 +40,10 @@ public class SizeService {
 		return sizeDTOs;
 	}
 	
+//	public List<Double> findSizeByProductId(Integer productId){
+//		List<Double> sizes = sizeRepo.findBySize(productId);
+//		return sizes ;
+//	}
+	
 	
 }

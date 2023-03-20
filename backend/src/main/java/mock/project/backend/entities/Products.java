@@ -65,11 +65,11 @@ public class Products implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="product")
 	private Set<Images> images;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "product_size", schema = "dbo",
-	joinColumns = {@JoinColumn(name="product_id",referencedColumnName = "product_id") },
-	inverseJoinColumns = { @JoinColumn(name="size_id",referencedColumnName = "size_id") })
-	private List<Sizes> sizes;
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "product_size", schema = "dbo",
+//	joinColumns = {@JoinColumn(name="product_id",referencedColumnName = "product_id") },
+//	inverseJoinColumns = { @JoinColumn(name="size_id",referencedColumnName = "size_id") })
+//	private List<Sizes> sizes;
 
 	public Products() {
 	super();
@@ -191,13 +191,13 @@ public class Products implements Serializable{
 		this.images = images;
 	}
 
-	public List<Sizes> getSizes() {
-		return sizes;
-	}
-
-	public void setSizes(List<Sizes> sizes) {
-		this.sizes = sizes;
-	}
+//	public List<Sizes> getSizes() {
+//		return sizes;
+//	}
+//
+//	public void setSizes(List<Sizes> sizes) {
+//		this.sizes = sizes;
+//	}
 
 	public LocalDate getDate() {
 		return date;

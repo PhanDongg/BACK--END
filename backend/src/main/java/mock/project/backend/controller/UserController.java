@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,9 +34,13 @@ public class UserController {
 	private OrderService orderService;
 	
 	//register new user
-	@PostMapping(value="/register-user", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Users save(@RequestBody UserDTO user) throws Exception {
-		return userService.registerUserAccount(user);
+	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer save(@RequestBody UserDTO user) throws Exception {
+		Users newUser = userService.registerUserAccount(user);
+		if(newUser == null) {
+			return new ResponseTransfer("Something went wrong");		
+			}
+		return new ResponseTransfer("Register successful");	
 	}
 	
 	//get userInfo

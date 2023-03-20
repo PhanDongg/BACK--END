@@ -44,12 +44,12 @@ public class AuthenticationController {
 	private UserDetailsService userDetailsService;
 
 	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);
 		}
-		return "redirect:/login?logout";
+		return ResponseEntity.ok("Logout successful!");
 	}
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
