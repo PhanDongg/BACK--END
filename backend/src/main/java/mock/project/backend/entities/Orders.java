@@ -1,6 +1,7 @@
 package mock.project.backend.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class Orders implements Serializable {
 	private Integer orderId;	
 	
 	@Column(name="order_date", length = 50)
-	private Date orderDate;
+	private LocalDate orderDate;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "status_id", referencedColumnName = "status_id")
@@ -39,4 +40,58 @@ public class Orders implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="order")
 	private Set<OrderDetails> orderDetails;
+
+	
+	public Orders() {
+		super();
+	}
+
+	public Orders(Integer orderId, LocalDate orderDate, Status status, Users user) {
+		super();
+		this.orderId = orderId;
+		this.orderDate = orderDate;
+		this.status = status;
+		this.user = user;
+	}
+
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public Set<OrderDetails> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(Set<OrderDetails> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
 }

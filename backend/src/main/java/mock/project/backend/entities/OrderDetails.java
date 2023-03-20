@@ -33,5 +33,46 @@ public class OrderDetails implements Serializable {
 	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
 	private Orders order;
 	
+	public OrderDetails() {
+		super();
+	}
 
+	public OrderDetails(Integer orderDetailId, int quantity) {
+		super();
+		this.orderDetailId = orderDetailId;
+		this.quantity = quantity;
+	}
+
+	public Integer getOrderDetailId() {
+		return orderDetailId;
+	}
+
+	public void setOrderDetailId(Integer orderDetailId) {
+		this.orderDetailId = orderDetailId;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public Products getProduct() {
+		return product;
+	}
+
+	public void setProduct(Products product) {
+		this.product = product;
+	}
+
+	public Orders getOrder() {
+		return order;
+	}
+
+	public void setOrder(Orders order) {
+		this.order = order;
+	}
+	
 }

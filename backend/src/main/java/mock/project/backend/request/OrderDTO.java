@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.Set;
 
 import mock.project.backend.entities.OrderDetails;
+import mock.project.backend.entities.Status;
 import mock.project.backend.entities.Users;
 
 public class OrderDTO {
@@ -11,6 +12,7 @@ public class OrderDTO {
 	private Integer orderId;
 	private Date orderDate;
 	private Users user;
+	private Status status;
 	private Set<OrderDetails> orderDetails;
 	public Integer getOrderId() {
 		return orderId;

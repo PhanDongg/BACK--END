@@ -45,10 +45,13 @@ public class UserController {
 		return userService.findByUserName(username);
 	}
 	
+	//get list order of user
 	@GetMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<OrderDTO> getOrderByUserID(@RequestParam(value="userId",required = false)Integer userId) throws Exception {
 		logger.info("Searching order by id...");
 		return orderService.findListOrdersByUserId(userId);
 	}
+	
+	
 }
 

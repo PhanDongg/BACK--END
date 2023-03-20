@@ -2,6 +2,7 @@ package mock.project.backend.entities;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class Products implements Serializable{
 	private int quantity;
 	
 	@Column(name="date")
-	private Date date;
+	private LocalDate date;
 	
 	@Column(name="brand", length = 50)
 	private String brand;
@@ -61,12 +62,8 @@ public class Products implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="product")
 	private Set<OrderDetails> orderDetails;
 	
-	
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="product")
 	private Set<Images> images;
-	
-//	@OneToMany(cascade = CascadeType.ALL,mappedBy="product")
-//	private Set<ProductSize> productSize;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "product_size", schema = "dbo",
@@ -92,7 +89,7 @@ public class Products implements Serializable{
 	}
 	
 	public Products(String productName, double price, String description, String type, String color, int quantity,
-			Date date, String brand, Categories category) {
+			LocalDate date, String brand, Categories category, Set<Images> images) {
 		super();
 		this.productName = productName;
 		this.price = price;
@@ -103,6 +100,7 @@ public class Products implements Serializable{
 		this.date = date;
 		this.brand = brand;
 		this.category = category;
+		this.images = images;
 	}
 
 	public Integer getProductId() {
@@ -201,12 +199,12 @@ public class Products implements Serializable{
 		this.sizes = sizes;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-	
+
 }
