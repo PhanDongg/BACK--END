@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,7 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(userService.findAllUser(pageable));
 	}
-
+	//list all order
 	@GetMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OrderDTO>> finAllOrder(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
@@ -66,7 +67,7 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(orderService.findAllOrder(pageable));
 	}
-
+	//update order status
 	@PutMapping(value = "/order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseTransfer updateStatusOrder(@PathVariable("id") Integer orderId) {
 		logger.info("Searching order by orderId...");
@@ -78,19 +79,18 @@ public class AdminController {
 
 	// update product by id
 	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseTransfer updateProduct(@RequestBody Products product) {
+	public ResponseEntity<Products> updateProduct(@RequestBody ProductDTO product) {
 		logger.info("Updating product.....");
-		productService.save(product);
-		return new ResponseTransfer("Update Successfull!");
+		return ResponseEntity.ok(productService.save(product));
 	}
 
 	// add new product
-	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Products saveProducts(@RequestBody Products product) {
+	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Products saveProducts(@RequestBody ProductDTO product) {
 		logger.info("Adding new product.....");
 		return productService.save(product);
 	}
-	
+	//list all product
 	@GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProduct(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
@@ -101,4 +101,11 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
 	}
+	//delete product
+	@DeleteMapping(value="product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer detleteProduct(@PathVariable("id")Integer productId){
+		productService.delete(productId);
+		return new ResponseTransfer("Delete successful!");
+	}
 }
+

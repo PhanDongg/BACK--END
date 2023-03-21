@@ -120,12 +120,20 @@ public class ProductService {
 		return productDTOs;
 	}
 
-	public Products save(Products product) {
+	public Products save(ProductDTO productDTO) {
+		Products product =	new Products();
+		product.setProductName(productDTO.getProductName());
+		product.setBrand(productDTO.getBrand());
+		product.setColor(productDTO.getColor());
+		product.setDate(productDTO.getDate());
+		product.setType(productDTO.getType());
+		product.setBrand(productDTO.getBrand());
+		product.setPrice(productDTO.getPrice());
 		return productRepo.save(product);
 	}
 
 	public void delete(int productId) {
-		productRepo.findById(productId);
+		productRepo.deleteById(productId);
 	}
 
 	public ProductDTO findById(final Integer id) {
