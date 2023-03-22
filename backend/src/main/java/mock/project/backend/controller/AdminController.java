@@ -20,24 +20,22 @@ import mock.project.backend.services.UserService;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-	
+
 	private Logger logger = Logger.getLogger(AdminController.class);
-	
+
 	@Autowired
 	private UserService userService;
-	
-	//list all user
-		@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<List<UserDTO>> finAllProduct(@RequestParam(name="page",required = false) Integer pageIndex) {
-			if (pageIndex == null || pageIndex == 0) {
-				Pageable pageable = PageRequest.of(0, 5);
-				return ResponseEntity.ok(userService.findAllUser(pageable));
-			}
-			Pageable pageable = PageRequest.of(pageIndex, 5);
+
+	// list all user
+	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserDTO>> finAllProduct(
+			@RequestParam(name = "page", required = false) Integer pageIndex) {
+		if (pageIndex == null || pageIndex == 0) {
+			Pageable pageable = PageRequest.of(0, 5);
 			return ResponseEntity.ok(userService.findAllUser(pageable));
 		}
-		
-		
-		
-		
+		Pageable pageable = PageRequest.of(pageIndex, 5);
+		return ResponseEntity.ok(userService.findAllUser(pageable));
+	}
+
 }

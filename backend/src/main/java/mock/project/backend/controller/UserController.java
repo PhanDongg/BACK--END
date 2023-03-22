@@ -16,7 +16,6 @@ import mock.project.backend.entities.Users;
 import mock.project.backend.request.OrderDTO;
 import mock.project.backend.request.UserDTO;
 import mock.project.backend.request.UserDTOReponse;
-import mock.project.backend.response.ResponseTransfer;
 import mock.project.backend.services.OrderService;
 import mock.project.backend.services.UserService;
 
@@ -51,4 +50,3 @@ public class UserController {
 		return orderService.findListOrdersByUserId(userId);
 	}
 }
-

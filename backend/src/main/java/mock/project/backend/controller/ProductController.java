@@ -56,12 +56,12 @@ public class ProductController {
 //	}
 	//list all products
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ProductDTO>> finAllProduct(@RequestParam(name="page",required = false) Integer pageIndex) {
+	public ResponseEntity<List<ProductDTO>> finAllProduct(@RequestParam(name="page", required = false) Integer pageIndex) {
 		if (pageIndex == null || pageIndex == 0) {
-			Pageable pageable = PageRequest.of(0, 7);
+			Pageable pageable = PageRequest.of(0, 15);
 			return ResponseEntity.ok(productService.findAllProduct(pageable));
 		}
-		Pageable pageable = PageRequest.of(pageIndex, 7);
+		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
 	}
 	
