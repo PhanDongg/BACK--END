@@ -17,11 +17,11 @@ import mock.project.backend.entities.Roles;
 
 public class UserDTO {
 	
-	
+	private Integer userId;
+
 	@NotEmpty(message = "Thiếu username")
 	private String userName;
 	
-	@NotEmpty(message = "Thiếu password")
     @Min(value = 8, message = "Password phải từ 8 kí tự trở lên")
 	private String password;
 	
@@ -54,19 +54,6 @@ public class UserDTO {
 		super();
 	}
 	
-//	public UserDTO(String userName, String password, String fullName, String email, String address, String phone,
-//			Date dateofBirth, String image, Roles role) {
-//		super();
-//		this.userName = userName;
-//		this.password = password;
-//		this.fullName = fullName;
-//		this.email = email;
-//		this.address = address;
-//		this.phone = phone;
-//		this.dateofBirth = dateofBirth;
-//		this.image = image;
-//		this.role = role;
-//	}
 	
 	public String getUserName() {
 		return userName;
@@ -159,5 +146,21 @@ public class UserDTO {
 		this.userName = userName;
 	}
 
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+
+	@Override
+	public String toString() {
+		return "UserDTO [userId=" + userId + ", userName=" + userName + ", password=" + password + ", fullName="
+				+ fullName + ", email=" + email + ", address=" + address + ", phone=" + phone + ", dateofBirth="
+				+ dateofBirth + ", image=" + image + ", role=" + role + "]";
+	}
+	
 }
 

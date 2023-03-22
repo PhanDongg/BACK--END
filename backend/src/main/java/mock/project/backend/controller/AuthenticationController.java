@@ -58,7 +58,7 @@ public class AuthenticationController {
 		if(authenticate(user.getUsername(), user.getPassword())) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 		token = tokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new JwtResponse(token));		
+		return ResponseEntity.ok(new ResponseTransfer(token));		
 		}
 		return 	ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect username or password,can not create token, please login again!");
 	}

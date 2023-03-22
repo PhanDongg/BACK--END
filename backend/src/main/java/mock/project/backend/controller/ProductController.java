@@ -3,6 +3,7 @@ package mock.project.backend.controller;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,10 @@ public class ProductController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+
+	@Autowired
+	private ModelMapper modelMap;
 
 	// list all products
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,6 +57,11 @@ public class ProductController {
 		}
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
+	}
+	//list product no  paging
+	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ProductDTO>> finAllProductNoPaging() {
+		return ResponseEntity.ok(productService.findAllProductNoPaging());
 	}
 
 	// list product by search
@@ -90,9 +100,15 @@ public class ProductController {
 
 	// find product by id
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ProductDTO> findProductById(@PathVariable("id") Integer id) {
+	public ResponseEntity<?> findProductById(@PathVariable("id") Integer id) throws Exception {
 		logger.info("Searching product by id...");
-		return ResponseEntity.ok(productService.findPoductById(id));
+		Products product =productService.findById(id);
+		ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+		if(product == null) {
+			 new Exception("Product not found: " + id);
+			return ResponseEntity.ok(new ResponseTransfer("Could not found"));
+		}
+		return ResponseEntity.ok(producctDTO);
 	}
 
 	

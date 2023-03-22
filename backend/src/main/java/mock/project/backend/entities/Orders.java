@@ -3,6 +3,7 @@ package mock.project.backend.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,7 +26,8 @@ public class Orders implements Serializable {
 	@Id
 	@Column(name = "order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer orderId;	
+	private Integer orderId;
+	
 	
 	@Column(name="order_date", length = 50)
 	private LocalDate orderDate;
@@ -34,24 +36,15 @@ public class Orders implements Serializable {
 	@JoinColumn(name = "status_id", referencedColumnName = "status_id")
 	private Status status;
 	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy="order")
+	private List<Items> items;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private Users user;
 	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="order")
-	private Set<OrderDetails> orderDetails;
-
-	
 	public Orders() {
 		super();
-	}
-
-	public Orders(Integer orderId, LocalDate orderDate, Status status, Users user) {
-		super();
-		this.orderId = orderId;
-		this.orderDate = orderDate;
-		this.status = status;
-		this.user = user;
 	}
 
 	public Integer getOrderId() {
@@ -78,6 +71,14 @@ public class Orders implements Serializable {
 		this.status = status;
 	}
 
+	public List<Items> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Items> items) {
+		this.items = items;
+	}
+
 	public Users getUser() {
 		return user;
 	}
@@ -86,12 +87,4 @@ public class Orders implements Serializable {
 		this.user = user;
 	}
 
-	public Set<OrderDetails> getOrderDetails() {
-		return orderDetails;
-	}
-
-	public void setOrderDetails(Set<OrderDetails> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-	
 }

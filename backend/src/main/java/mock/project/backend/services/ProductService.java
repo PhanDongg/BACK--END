@@ -48,6 +48,16 @@ public class ProductService {
 		}
 		return productDTOs;
 	}
+	
+	public List<ProductDTO> findAllProductNoPaging( ){
+		List<Products> products = productRepo.findAll();
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
+		}
+		return productDTOs;
+	}
 
 	public List<ProductDTO> findPoductBySearch(String searchField) {
 		List<Products> products = new ArrayList<>();
@@ -132,14 +142,12 @@ public class ProductService {
 		return productRepo.save(product);
 	}
 
-	public void delete(int productId) {
+	public void delete(Integer productId) {
 		productRepo.deleteById(productId);
 	}
 
-	public ProductDTO findById(final Integer id) {
-		Optional<Products> product = productRepo.findById(id);
-		ProductDTO producctDTO = modelMap.map(product.get(), ProductDTO.class);
-		return producctDTO;
+	public Products findById(final Integer id) {
+		return productRepo.findById(id).get();
 	}
 
 	public ProductDTO findByCategory(final Integer id) {

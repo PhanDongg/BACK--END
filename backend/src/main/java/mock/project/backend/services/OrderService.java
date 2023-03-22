@@ -62,4 +62,8 @@ public class OrderService {
 		orderRepo.save(order);
 		return orderRepo.save(order);
 	}
+	
+	public void delete(Integer orderId) {
+		orderRepo.deleteById(orderId);
+	}
 }

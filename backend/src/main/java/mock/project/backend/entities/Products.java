@@ -60,16 +60,10 @@ public class Products implements Serializable{
 	private Categories category;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="product")
-	private Set<OrderDetails> orderDetails;
+	private Set<Items> items;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy="product")
-	private Set<Images> images;
-	
-//	@ManyToMany(cascade = CascadeType.ALL)
-//	@JoinTable(name = "product_size", schema = "dbo",
-//	joinColumns = {@JoinColumn(name="product_id",referencedColumnName = "product_id") },
-//	inverseJoinColumns = { @JoinColumn(name="size_id",referencedColumnName = "size_id") })
-//	private List<Sizes> sizes;
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy="product")
+	private Set<Images> images;	
 
 	public Products() {
 	super();
@@ -175,14 +169,6 @@ public class Products implements Serializable{
 		this.category = category;
 	}
 
-	public Set<OrderDetails> getOrderDetails() {
-		return orderDetails;
-	}
-
-	public void setOrderDetails(Set<OrderDetails> orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-
 	public Set<Images> getImages() {
 		return images;
 	}
@@ -191,13 +177,6 @@ public class Products implements Serializable{
 		this.images = images;
 	}
 
-//	public List<Sizes> getSizes() {
-//		return sizes;
-//	}
-//
-//	public void setSizes(List<Sizes> sizes) {
-//		this.sizes = sizes;
-//	}
 
 	public LocalDate getDate() {
 		return date;
@@ -205,6 +184,14 @@ public class Products implements Serializable{
 
 	public void setDate(LocalDate date) {
 		this.date = date;
+	}
+
+	public Set<Items> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<Items> items) {
+		this.items = items;
 	}
 
 }

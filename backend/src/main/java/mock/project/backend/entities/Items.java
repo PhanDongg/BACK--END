@@ -12,18 +12,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="order_detail")
-public class OrderDetails implements Serializable {
-
+@Table(name="item")
+public class Items implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name = "order_detail_id")
+	@Column(name = "item_ids")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderDetailId;
 	
 	@Column(name="quantity", length = 50, columnDefinition = "nvarchar(50)")
 	private int quantity;
+	
+	@Column(name="total_price", length = 50, columnDefinition = "nvarchar(50)")
+	private double totalPrice;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id",referencedColumnName = "product_id")
@@ -32,15 +34,9 @@ public class OrderDetails implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "order_id", referencedColumnName = "order_id")
 	private Orders order;
-	
-	public OrderDetails() {
-		super();
-	}
 
-	public OrderDetails(Integer orderDetailId, int quantity) {
+	public Items() {
 		super();
-		this.orderDetailId = orderDetailId;
-		this.quantity = quantity;
 	}
 
 	public Integer getOrderDetailId() {
@@ -59,6 +55,14 @@ public class OrderDetails implements Serializable {
 		this.quantity = quantity;
 	}
 
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public Products getProduct() {
 		return product;
 	}
@@ -74,5 +78,5 @@ public class OrderDetails implements Serializable {
 	public void setOrder(Orders order) {
 		this.order = order;
 	}
-	
+
 }
