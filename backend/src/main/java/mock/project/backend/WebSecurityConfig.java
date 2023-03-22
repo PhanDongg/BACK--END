@@ -1,5 +1,9 @@
 package mock.project.backend;
 
+<<<<<<< HEAD
+=======
+import org.modelmapper.ModelMapper;
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,13 +42,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		return bCryptPasswordEncoder;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -54,12 +65,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/authenticate/**","/api/user/**","/api/product/**").permitAll();
 		http
 			.authorizeRequests().antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')");
+		http
+		.authorizeRequests().antMatchers("/api/order/**").access("hasRole('ROLE_USER','ROLE_ADMIN')");
         http       
         	.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+<<<<<<< HEAD
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
+=======
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+}
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6

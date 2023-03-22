@@ -31,7 +31,7 @@ public class OrderService {
 	@Autowired
 	private ModelMapper modelMap;
 	
-	public List<OrderDTO> findByBrand(Pageable pageable) {
+	public List<OrderDTO> findAllOrder(Pageable pageable) {
 		List<OrderDTO> orderDTOs = new ArrayList<>();
 		Page<Orders> orders= orderRepo.findAll(pageable);
 		for (Orders order : orders) {
@@ -56,4 +56,18 @@ public class OrderService {
 		}
 		return orderDTOs;
 	}
+<<<<<<< HEAD
 }
+=======
+	
+	public  Orders save(OrderDTO OrderDTO) {
+		Orders  order = modelMap.map(OrderDTO, Orders.class);
+		orderRepo.save(order);
+		return orderRepo.save(order);
+	}
+	
+	public void delete(Integer orderId) {
+		orderRepo.deleteById(orderId);
+	}
+}
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6

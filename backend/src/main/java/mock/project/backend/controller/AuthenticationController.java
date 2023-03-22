@@ -44,21 +44,28 @@ public class AuthenticationController {
 	private UserDetailsService userDetailsService;
 
 	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);
 		}
-		return "redirect:/login?logout";
+		return ResponseEntity.ok("Logout successful!");
 	}
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAthenticatioToken(@RequestBody User user) throws Exception {
 		String token = null;
+<<<<<<< HEAD
 		if (authenticate(user.getUsername(), user.getPassword())) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 			token = tokenUtil.generateToken(userDetails);
 			return ResponseEntity.ok(new JwtResponse(token));
+=======
+		if(authenticate(user.getUsername(), user.getPassword())) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+		token = tokenUtil.generateToken(userDetails);
+		return ResponseEntity.ok(new ResponseTransfer(token));		
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body("Incorrect username or password,can not create token, please login again!");

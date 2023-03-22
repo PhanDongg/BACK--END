@@ -1,6 +1,7 @@
 package mock.project.backend.request;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import mock.project.backend.entities.Images;
@@ -14,7 +15,7 @@ public class ProductDTO {
 	private String description;
 	private String type;
 	private String color;
-	private Date date;
+	private LocalDate date;
 	private List<Sizes> sizes;
 	private int quantity;
 	private String brand;
@@ -81,11 +82,15 @@ public class ProductDTO {
 	public void setSizes(List<Sizes> sizes) {
 		this.sizes = sizes;
 	}
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+<<<<<<< HEAD
 	
 }
+=======
+}
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6

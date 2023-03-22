@@ -1,12 +1,16 @@
-package mock.project.backend.controller;
+	package mock.project.backend.controller;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,22 +35,39 @@ public class UserController {
 	@Autowired
 	private OrderService orderService;
 	
+	@Autowired
+	private ModelMapper modelMap;
+	
 	//register new user
-	@PostMapping(value="/register-user", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Users save(@RequestBody UserDTO user) throws Exception {
-		return userService.registerUserAccount(user);
+	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer save(@RequestBody UserDTO user) throws Exception {
+		Users newUser = userService.registerUserAccount(user);
+		if(newUser == null) {
+			return new ResponseTransfer("Something went wrong");		
+			}
+		return new ResponseTransfer("Register successful");	
 	}
 	
 	//get userInfo
-	@PostMapping(value="/userInfo", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/userinfo", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserDTOReponse getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
 		logger.info("Searching user by username...");
 		return userService.findByUserName(username);
 	}
 	
+	//get list order of user
 	@GetMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<OrderDTO> getOrderByUserID(@RequestParam(value="userId",required = false)Integer userId) throws Exception {
 		logger.info("Searching order by id...");
 		return orderService.findListOrdersByUserId(userId);
 	}
+	//update 
+	@PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserDTOReponse updateInfoUser(@RequestParam(value="username" ,required = false)String username,@RequestBody UserDTO userTDO) throws Exception {
+		logger.info("Updating userInf ..");
+		userTDO.setUserId(userService.findByUserName(username).getUserId());
+		UserDTOReponse userDTO = modelMap.map(userService.registerUserAccount(userTDO), UserDTOReponse.class);
+		return userDTO;
+	}
+
 }

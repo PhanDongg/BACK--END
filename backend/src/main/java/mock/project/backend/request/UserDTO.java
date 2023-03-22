@@ -1,5 +1,6 @@
 package mock.project.backend.request;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.validation.constraints.Email;
@@ -16,10 +17,11 @@ import mock.project.backend.entities.Roles;
 
 public class UserDTO {
 	
+	private Integer userId;
+
 	@NotEmpty(message = "Thiếu username")
 	private String userName;
 	
-	@NotEmpty(message = "Thiếu password")
     @Min(value = 8, message = "Password phải từ 8 kí tự trở lên")
 	private String password;
 	
@@ -36,9 +38,13 @@ public class UserDTO {
 	@Size(min =10 , max= 10,message = "Đủ 10 số nha")
 	private String phone;
 	
+//	@DateTimeFormat(pattern = "MM/dd/yyyy")
+////	@JsonFormat(pattern = "MM/dd/yyyy")
+//	private Date dateofBirth;
+	
+	// A Dong viet
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
-//	@JsonFormat(pattern = "MM/dd/yyyy")
-	private Date dateofBirth;
+	private LocalDate dateofBirth;
 	
 	private String image;
 	
@@ -48,27 +54,29 @@ public class UserDTO {
 		super();
 	}
 	
-	public UserDTO(String userName, String password, String fullName, String email, String address, String phone,
-			Date dateofBirth, String image, Roles role) {
-		super();
-		this.userName = userName;
-		this.password = password;
-		this.fullName = fullName;
-		this.email = email;
-		this.address = address;
-		this.phone = phone;
-		this.dateofBirth = dateofBirth;
-		this.image = image;
-		this.role = role;
-	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+	//A Dong viet
+	public UserDTO(@NotEmpty(message = "Thiếu username") String userName,
+		@NotEmpty(message = "Thiếu password") @Min(value = 8, message = "Password phải từ 8 kí tự trở lên") String password,
+		@NotEmpty(message = "Thiếu fullName") String fullName,
+		@NotBlank @Email(message = "Email không hợp lệ") String email,
+		@NotEmpty(message = "Thiếu addresss") String address,
+		@Size(min = 10, max = 10, message = "Đủ 10 số nha") String phone, LocalDate dateofBirth, String image,
+		Roles role) {
+	super();
+	this.userName = userName;
+	this.password = password;
+	this.fullName = fullName;
+	this.email = email;
+	this.address = address;
+	this.phone = phone;
+	this.dateofBirth = dateofBirth;
+	this.image = image;
+	this.role = role;
+}
 
 	public String getPassword() {
 		return password;
@@ -110,11 +118,11 @@ public class UserDTO {
 		this.phone = phone;
 	}
 
-	public Date getDateofBirth() {
+	public LocalDate getDateofBirth() {
 		return dateofBirth;
 	}
 
-	public void setDateofBirth(Date dateofBirth) {
+	public void setDateofBirth(LocalDate dateofBirth) {
 		this.dateofBirth = dateofBirth;
 	}
 
@@ -132,6 +140,26 @@ public class UserDTO {
 
 	public void setRole(Roles role) {
 		this.role = role;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+
+	@Override
+	public String toString() {
+		return "UserDTO [userId=" + userId + ", userName=" + userName + ", password=" + password + ", fullName="
+				+ fullName + ", email=" + email + ", address=" + address + ", phone=" + phone + ", dateofBirth="
+				+ dateofBirth + ", image=" + image + ", role=" + role + "]";
 	}
 	
 }

@@ -2,19 +2,38 @@ package mock.project.backend.controller;
 
 import java.util.List;
 
+import javax.persistence.criteria.Order;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.web.server.ServerHttpSecurity.ExceptionHandlingSpec;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.jsf.FacesContextUtils;
 
+import mock.project.backend.entities.Products;
+import mock.project.backend.entities.Status;
+import mock.project.backend.repository.OrderRepository;
+import mock.project.backend.request.OrderDTO;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.UserDTO;
+import mock.project.backend.request.UserDTOReponse;
+import mock.project.backend.response.ResponseTransfer;
+import mock.project.backend.services.OrderService;
+import mock.project.backend.services.ProductService;
+import mock.project.backend.services.ProductSizeService;
+import mock.project.backend.services.StatusService;
 import mock.project.backend.services.UserService;
 
 @RestController
@@ -26,9 +45,27 @@ public class AdminController {
 	@Autowired
 	private UserService userService;
 
+<<<<<<< HEAD
 	// list all user
 	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTO>> finAllProduct(
+=======
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private StatusService statusService;
+
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private ProductSizeService productSizeService;
+
+	// list all user
+	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<UserDTOReponse>> finAllUser(
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
 		if (pageIndex == null || pageIndex == 0) {
 			Pageable pageable = PageRequest.of(0, 5);
@@ -37,5 +74,81 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(userService.findAllUser(pageable));
 	}
+<<<<<<< HEAD
 
 }
+=======
+	//list all order
+	@GetMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<OrderDTO>> finAllOrder(
+			@RequestParam(name = "page", required = false) Integer pageIndex) {
+		if (pageIndex == null || pageIndex == 0) {
+			Pageable pageable = PageRequest.of(0, 5);
+			return ResponseEntity.ok(orderService.findAllOrder(pageable));
+		}
+		Pageable pageable = PageRequest.of(pageIndex, 5);
+		return ResponseEntity.ok(orderService.findAllOrder(pageable));
+	}
+	//update order status
+	@PutMapping(value = "/order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer updateStatusOrder(@RequestParam(name="orderId") Integer orderId ,
+												@RequestParam(name="statusId") Integer statusId) {
+		logger.info("Searching order by orderId...");
+		OrderDTO orderDTO = orderService.findOrderById(orderId);
+		Status status = statusService.findStatusById(statusId);
+		orderDTO.setStatus(status);
+		orderService.save(orderDTO);
+		return new ResponseTransfer("Updated successful!");
+
+	}
+
+	// update product by id
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Products> updateProduct(@RequestBody ProductDTO product) {
+		logger.info("Updating product.....");
+		return ResponseEntity.ok(productService.save(product));
+	}
+
+	// add new product
+	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Products saveProducts(@RequestBody ProductDTO product) {
+		logger.info("Adding new product.....");
+		return productService.save(product);
+	}
+	//list all product
+	@GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ProductDTO>> finAllProduct(
+			@RequestParam(name = "page", required = false) Integer pageIndex) {
+		if (pageIndex == null || pageIndex == 0) {
+			Pageable pageable = PageRequest.of(0, 5);
+			return ResponseEntity.ok(productService.findAllProduct(pageable));
+		}
+		Pageable pageable = PageRequest.of(pageIndex, 5);
+		return ResponseEntity.ok(productService.findAllProduct(pageable));
+	}
+	//delete product
+	@DeleteMapping(value="product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> detleteProduct(@PathVariable("id")Integer productId) throws Exception{
+		Products product =productService.findById(productId);
+		
+		if(product == null) {
+			 new Exception("Product not found: " + productId);
+			return ResponseEntity.ok(new ResponseTransfer("Could not found"));
+		}
+		productSizeService.deleteByProduct(product);
+		productService.delete(product.getProductId());
+		return ResponseEntity.ok(new ResponseTransfer("Delete successful!"));
+	}
+	
+	@DeleteMapping(value="order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer detleteOrder(@PathVariable("id")Integer productId){
+		ProductDTO product = productService.findPoductById(productId);
+		if(product==null) {
+			return new ResponseTransfer("Not found");
+		}
+		productService.delete(product.getProductId());
+		return new ResponseTransfer("Delete successful!");
+	}
+}
+
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6

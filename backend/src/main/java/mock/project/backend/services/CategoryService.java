@@ -2,6 +2,7 @@ package mock.project.backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mock.project.backend.entities.Categories;
+import mock.project.backend.entities.Products;
 import mock.project.backend.repository.CategoryRepository;
 import mock.project.backend.request.CategoryDTO;
+import mock.project.backend.request.ProductDTO;
 
 @Service
 @Transactional
@@ -37,4 +40,9 @@ public class CategoryService {
 		}
 		return categoryDTOs;
 	}
+<<<<<<< HEAD
 }
+=======
+	
+}
+>>>>>>> 06603f08a7d3bf016bd69dcec4f47e1fe5ea05a6
