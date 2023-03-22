@@ -39,50 +39,52 @@ public class ProductService {
 	@Autowired
 	private ModelMapper modelMap;
 
-	
-	public List<ProductDTO> findByBrand(Pageable pageable) {
-		List<ProductDTO> productDTOs = new ArrayList<>();
-		Page<Products> productByBrand = productRepo.findAll(pageable);
-		for (Products product : productByBrand) {
-			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
-			productDTOs.add(producctDTO);
-
-		}
-		return productDTOs;
-
-	}
-
 	public List<ProductDTO> findAllProduct(Pageable pageable) {
 		Page<Products> products = productRepo.findAll(pageable);
 		List<ProductDTO> productDTOs = new ArrayList<>();
-
 		for (Products product : products) {
 			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
 			productDTOs.add(producctDTO);
 		}
 		return productDTOs;
-
+	}
+	
+	public List<ProductDTO> findAllProductNoPaging( ){
+		List<Products> products = productRepo.findAll();
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
+		}
+		return productDTOs;
 	}
 
 	public List<ProductDTO> findPoductBySearch(String searchField) {
 		List<Products> products = new ArrayList<>();
 		products = productRepo.findByProductName(searchField);
-
 		List<ProductDTO> productDTOs = new ArrayList<>();
-
 		for (Products product : products) {
 			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
 			productDTOs.add(producctDTO);
 		}
 		return productDTOs;
+	}
 
+	public List<ProductDTO> findPoductByCategory(Integer category) {
+		List<Products> products = new ArrayList<>();
+		products = productRepo.findByCategory(category);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
+		}
+		return productDTOs;
 	}
 
 	public ProductDTO findPoductById(Integer id) {
 		Optional<Products> product = productRepo.findById(id);
 		ProductDTO productDTO = modelMap.map(product.get(), ProductDTO.class);
 		return productDTO;
-
 	}
 
 	public List<ProductDTO> searchProductByFilter(ProductRequest productRequest) {
@@ -103,12 +105,12 @@ public class ProductService {
 			searchCriterias.add(cb.equal(root.get("color"), color));
 		}
 		if ((size != 0) && (size < 50)) {
-			Join<Products, Sizes> sizesJoin = root.join( "sizes" );
-			searchCriterias.add(cb.equal( sizesJoin.get("size"), size));
+			Join<Products, Sizes> sizesJoin = root.join("sizes");
+			searchCriterias.add(cb.equal(sizesJoin.get("size"), size));
 		}
-		if ((categoryName != "" ) && (categoryName != null)) {
-			Join<Products, Categories> categoryJoin = root.join( "category" );
-			searchCriterias.add(cb.equal( categoryJoin.get("categoryName"), categoryName));
+		if ((categoryName != "") && (categoryName != null)) {
+			Join<Products, Categories> categoryJoin = root.join("category");
+			searchCriterias.add(cb.equal(categoryJoin.get("categoryName"), categoryName));
 		}
 		if ((type != "") && (type != null)) {
 			searchCriterias.add(cb.equal(root.get("type"), type));
@@ -124,22 +126,44 @@ public class ProductService {
 		for (Products product : products) {
 			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
 			productDTOs.add(producctDTO);
-
 		}
 		return productDTOs;
 	}
-	
-	public Products save(Products product) {
+
+	public Products save(ProductDTO productDTO) {
+		Products product =	new Products();
+		product.setProductName(productDTO.getProductName());
+		product.setBrand(productDTO.getBrand());
+		product.setColor(productDTO.getColor());
+		product.setDate(productDTO.getDate());
+		product.setType(productDTO.getType());
+		product.setBrand(productDTO.getBrand());
+		product.setPrice(productDTO.getPrice());
 		return productRepo.save(product);
 	}
-	
-	public void delete(int productId) {
-			productRepo.findById(productId);
+
+	public void delete(Integer productId) {
+		productRepo.deleteById(productId);
+	}
+
+	public Products findById(final Integer id) {
+		return productRepo.findById(id).get();
+	}
+
+	public ProductDTO findByCategory(final Integer id) {
+		Optional<Products> product = productRepo.findById(id);
+		ProductDTO producctDTO = modelMap.map(product.get(), ProductDTO.class);
+		return producctDTO;
+	}
+
+	public List<ProductDTO> findAllProductByDateDESC(Pageable pageable) {
+		Page<Products> products = productRepo.findAll(pageable);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
 		}
-	
-	 public ProductDTO findById(final Integer id) {
-		 Optional<Products> product =  productRepo.findById(id);
-		 ProductDTO producctDTO = modelMap.map(product.get(), ProductDTO.class);
-			return producctDTO;
-		}
+		return productDTOs;
+//	 List<Products> passengers = repository.findAll(Sort.by(Sort.Direction.ASC, "Date"));
+	}
 }

@@ -29,16 +29,6 @@ public class Roles implements Serializable{
 	@Column(name="role_name", length = 50)
 	private String roleName;
 	
-//	@OneToOne(cascade = CascadeType.ALL,mappedBy="role")
-//	private Users user;
-	
-<<<<<<< HEAD
-//	public Roles() {
-//		super();
-//	}
-=======
->>>>>>> 459bd46e06ad81af3ed3b385f3227067fbe851b6
-	
 	public Roles(String roleName) {
 		super();
 		this.roleName = roleName;
@@ -60,12 +50,4 @@ public class Roles implements Serializable{
 		this.roleName = roleName;
 	}
 
-//	public Users getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(Users user) {
-//		this.user = user;
-//	}
-	
 }

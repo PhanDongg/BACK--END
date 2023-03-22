@@ -37,9 +37,6 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-//	public Users checkLogin(final Users user) {
-//		return userRepo.findByUserNameAndPassword(user.getUserName(), user.getEncryptedPassword());
-//	}
 		
 	public Users registerUserAccount(UserDTO userDTO) throws Exception {
 		Users user = new Users();
@@ -62,12 +59,12 @@ public class UserService {
 		return userDTO;
 	}
 	
-	public List<UserDTO> findAllUser(Pageable pageable) {
+	public List<UserDTOReponse> findAllUser(Pageable pageable) {
 		Page<Users> users = userRepo.findAll(pageable);
-		List<UserDTO> userDTOs = new ArrayList<>();
+		List<UserDTOReponse> userDTOs = new ArrayList<>();
 		for (Users user : users) {
-			UserDTO userDTO = modelMap.map(user, UserDTO.class);
-			userDTOs.add(userDTO);
+			UserDTOReponse userDTOResponse = modelMap.map(user, UserDTOReponse.class);
+			userDTOs.add(userDTOResponse);
 		}
 		return userDTOs;
 
