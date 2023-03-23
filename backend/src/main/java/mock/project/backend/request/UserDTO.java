@@ -19,30 +19,23 @@ public class UserDTO {
 	
 	private Integer userId;
 
-	@NotEmpty(message = "Thiếu username")
+	@NotEmpty
 	private String userName;
 	
-    @Min(value = 8, message = "Password phải từ 8 kí tự trở lên")
+	@NotEmpty
 	private String password;
 	
-	@NotEmpty(message = "Thiếu fullName")
+	@NotEmpty
 	private String fullName;
 	
 	@NotBlank
-	@Email(message = "Email không hợp lệ")
+	@Email
 	private String email;
 	
-	@NotEmpty(message = "Thiếu addresss")
 	private String address;
 	
-	@Size(min =10 , max= 10,message = "Đủ 10 số nha")
 	private String phone;
 	
-//	@DateTimeFormat(pattern = "MM/dd/yyyy")
-////	@JsonFormat(pattern = "MM/dd/yyyy")
-//	private Date dateofBirth;
-	
-	// A Dong viet
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private LocalDate dateofBirth;
 	
@@ -58,25 +51,6 @@ public class UserDTO {
 	public String getUserName() {
 		return userName;
 	}
-	//A Dong viet
-	public UserDTO(@NotEmpty(message = "Thiếu username") String userName,
-		@NotEmpty(message = "Thiếu password") @Min(value = 8, message = "Password phải từ 8 kí tự trở lên") String password,
-		@NotEmpty(message = "Thiếu fullName") String fullName,
-		@NotBlank @Email(message = "Email không hợp lệ") String email,
-		@NotEmpty(message = "Thiếu addresss") String address,
-		@Size(min = 10, max = 10, message = "Đủ 10 số nha") String phone, LocalDate dateofBirth, String image,
-		Roles role) {
-	super();
-	this.userName = userName;
-	this.password = password;
-	this.fullName = fullName;
-	this.email = email;
-	this.address = address;
-	this.phone = phone;
-	this.dateofBirth = dateofBirth;
-	this.image = image;
-	this.role = role;
-}
 
 	public String getPassword() {
 		return password;

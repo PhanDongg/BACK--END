@@ -41,16 +41,19 @@ public class UserController {
 	
 	//register new user
 	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseTransfer save(@RequestBody UserDTO user) throws Exception {
+	public ResponseEntity<String> save(@RequestBody UserDTO user) throws Exception {
+		System.out.println("------"+user);
 		Users newUser = userService.registerUserAccount(user);
+		System.out.println(newUser);
 		if(newUser == null) {
-			return new ResponseTransfer("Something went wrong");		
+			return ResponseEntity.badRequest().build();		
 			}
-		return new ResponseTransfer("Register successful");	
+		String msg = "Register successful!";
+		return ResponseEntity.ok(msg);	
 	}
 	
 	//get userInfo
-	@GetMapping(value="/userinfo", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
 	public UserDTOReponse getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
 		logger.info("Searching user by username...");
 		return userService.findByUserName(username);
