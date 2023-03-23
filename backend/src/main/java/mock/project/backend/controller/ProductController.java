@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mock.project.backend.entities.Products;
+import mock.project.backend.entities.Sizes;
 import mock.project.backend.request.CategoryDTO;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.ProductRequest;
@@ -90,6 +91,13 @@ public class ProductController {
 	public ResponseEntity<List<SizeDTO>> findAllSize() {
 		return ResponseEntity.ok(sizeService.findAllSizes());
 	}
+	
+	// list sizes by productId
+	@GetMapping(value = "/{id}/sizes", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Integer>> findSizeByProductId(@PathVariable("id") Integer productId) {
+		List<Integer> sizes =sizeService.findSizeByProductId(productId);
+		return ResponseEntity.ok(sizes);
+		}
 
 	// search product by filter
 	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -151,19 +159,4 @@ public class ProductController {
 		return ResponseEntity.ok(productService.findAllProduct(sortedByDateDesc));
 	}
 
-//	// list products by price ASC/DESC
-//	@GetMapping(value = "/brand", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<List<ProductDTO>> findAllProductByBrand(
-//			@RequestParam(name = "brand", required = false) String brand, @RequestParam(name="page",required = false) Integer pageIndex) {
-//		if (pageIndex == null || pageIndex == 0) {
-//			Pageable sortByBrand = PageRequest.of(0, 5, Sort.by("" + brand + ""));
-//			return ResponseEntity.ok(productService.findAllProduct(sortByBrand));
-//		}
-//		if (pageIndex != 0) {
-//			Pageable sortByBrand = PageRequest.of(pageIndex, 5, Sort.by("" + brand + ""));
-//			return ResponseEntity.ok(productService.findAllProduct(sortByBrand));
-//		}
-//		Pageable sortByBrand = PageRequest.of(pageIndex, 5, Sort.by("" + brand + ""));
-//		return ResponseEntity.ok(productService.findAllProduct(sortByBrand));
-//	}
 }

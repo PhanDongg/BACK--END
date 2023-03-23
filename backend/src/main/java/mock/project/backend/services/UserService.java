@@ -40,6 +40,7 @@ public class UserService {
 		
 	public Users registerUserAccount(UserDTO userDTO) throws Exception {
 		Users user = new Users();
+		user.setUserId(userDTO.getUserId());
 		user.setUserName(userDTO.getUserName());
 		user.setEncryptedPassword((bCryptPasswordEncoder.encode(userDTO.getPassword())));;
 		user.setFullName(userDTO.getUserName());

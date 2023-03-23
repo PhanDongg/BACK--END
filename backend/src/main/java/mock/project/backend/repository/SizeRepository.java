@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import mock.project.backend.entities.Sizes;
 @Repository(value="sizeRepo")
 public interface SizeRepository  extends JpaRepository<Sizes, Integer>{
-//	@Query("SELECT size FROM Sizes s "
-//			+ "LEFT JOIN ProductSize ps ON s.sizeId = ps.size.sizeId "
-//			+ "WHERE ps.product.productId =?1")
-//	List<Double> findBySize(Integer productId);
+	@Query("SELECT s.size FROM Sizes s "
+			+ "LEFT JOIN ProductSize ps ON s.sizeId = ps.size.sizeId "
+			+ "WHERE ps.product.productId =?1")
+	List<Integer> findBySize(Integer productId);
 }

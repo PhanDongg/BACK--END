@@ -53,12 +53,12 @@ public class AuthenticationController {
 	}
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createAthenticatioToken(@RequestBody User user) throws Exception {
+	public ResponseEntity<String> createAthenticatioToken(@RequestBody User user) throws Exception {
 		String token = null;
 		if(authenticate(user.getUsername(), user.getPassword())) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 		token = tokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new ResponseTransfer(token));		
+		return ResponseEntity.ok(token);		
 		}
 		return 	ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect username or password,can not create token, please login again!");
 	}
