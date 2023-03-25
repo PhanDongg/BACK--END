@@ -51,7 +51,9 @@ public class UserService {
 		user.setImage(userDTO.getImage());
 		user.setEnabled(true);
 		userRepo.save(user);
+		if(userDTO.getRole() != null) {
 		userRoleRepo.save(new UserRole(user,userDTO.getRole()));
+		}
 		return user;
 	}
 	

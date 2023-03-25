@@ -42,9 +42,7 @@ public class UserController {
 	//register new user
 	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> save(@RequestBody UserDTO user) throws Exception {
-		System.out.println("------"+user);
 		Users newUser = userService.registerUserAccount(user);
-		System.out.println(newUser);
 		if(newUser == null) {
 			return ResponseEntity.badRequest().build();		
 			}
@@ -54,9 +52,9 @@ public class UserController {
 	
 	//get userInfo
 	@GetMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTOReponse getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
+	public ResponseEntity<UserDTOReponse> getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
 		logger.info("Searching user by username...");
-		return userService.findByUserName(username);
+		return ResponseEntity.ok(userService.findByUserName(username));
 	}
 	
 	//get list order of user
