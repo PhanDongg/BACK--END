@@ -125,25 +125,25 @@ public class ProductController {
 
 	// list products by price ASC/DESC
 	@GetMapping(value = "/price", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ProductDTO>> finAllProductPriceAsc(
-			@RequestParam(name = "sort", required = false) String sort, @RequestParam("page") Integer pageIndex) {
-		if (sort.contains("asc") && pageIndex == null || pageIndex == 0) {
-			Pageable sortedByPriceDesc = PageRequest.of(0, 5, Sort.by("price").ascending());
-			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
-		}
-		if (sort.contains("asc")  && pageIndex != 0) {
-			Pageable sortedByPriceDesc = PageRequest.of(pageIndex, 5, Sort.by("price").ascending());
-			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
-		}
-		if (sort.contains("desc")  && pageIndex == null || pageIndex == 0) {
-			Pageable sortedByPriceDesc = PageRequest.of(0, 5, Sort.by("price").descending());
+	public ResponseEntity<List<ProductDTO>> finAllProductByPrice(
+			@RequestParam(name = "sort", required = false) String sort, @RequestParam(value="page", required = false) Integer pageIndex) {
+		if (sort.contains("desc")  && pageIndex == null) {
+			Pageable sortedByPriceDesc = PageRequest.of(0, 10, Sort.by("price").descending());
 			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
 		}
 		if (sort.contains("desc")  && pageIndex != 0) {
-			Pageable sortedByPriceDesc = PageRequest.of(pageIndex, 5, Sort.by("price").descending());
+			Pageable sortedByPriceDesc = PageRequest.of(pageIndex, 10, Sort.by("price").descending());
 			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
 		}
-		Pageable pageable = PageRequest.of(pageIndex, 5);
+		if (sort.contains("asc") && pageIndex == null ) {
+			Pageable sortedByPriceDesc = PageRequest.of(0, 10, Sort.by("price").ascending());
+			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
+		}
+		if (sort.contains("asc")  && pageIndex != 0) {
+			Pageable sortedByPriceDesc = PageRequest.of(pageIndex, 10, Sort.by("price").ascending());
+			return ResponseEntity.ok(productService.findAllProduct(sortedByPriceDesc));
+		}
+		Pageable pageable = PageRequest.of(0, 10);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
 	}
 
@@ -152,7 +152,7 @@ public class ProductController {
 	public ResponseEntity<List<ProductDTO>> finAllProductByDateDESC(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
 		if (pageIndex == null || pageIndex == 0) {
-			Pageable sortedByDateDesc = PageRequest.of(0, 5, Sort.by("date").descending());
+			Pageable sortedByDateDesc = PageRequest.of(0, 20, Sort.by("date").descending());
 			return ResponseEntity.ok(productService.findAllProduct(sortedByDateDesc));
 		}
 		Pageable sortedByDateDesc = PageRequest.of(pageIndex, 5);

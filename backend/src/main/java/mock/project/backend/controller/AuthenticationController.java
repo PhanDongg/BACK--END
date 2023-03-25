@@ -44,7 +44,7 @@ public class AuthenticationController {
 	private UserDetailsService userDetailsService;
 
 	@GetMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> logoutPage(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<String> logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);
@@ -60,7 +60,8 @@ public class AuthenticationController {
 		token = tokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(token);		
 		}
-		return 	ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect username or password,can not create token, please login again!");
+		String msg = "Incorrect username or password, please login again!";
+		return 	ResponseEntity.ok(msg);
 	}
 
 	private boolean authenticate(String username, String password) throws Exception {
