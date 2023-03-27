@@ -48,7 +48,9 @@ public class AuthenticationController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);
+			SecurityContextHolder.getContext().setAuthentication(null);
 		}
+		System.out.println(authentication);
 		return ResponseEntity.ok("Logout successful!");
 	}
 

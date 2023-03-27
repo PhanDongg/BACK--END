@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import mock.project.backend.entities.Categories;
+import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Sizes;
 import mock.project.backend.repository.ProductRepository;
@@ -105,12 +106,12 @@ public class ProductService {
 			searchCriterias.add(cb.equal(root.get("color"), color));
 		}
 		if ((size != 0) && (size < 50)) {
-			Join<Products, Sizes> sizesJoin = root.join("sizes");
-			searchCriterias.add(cb.equal(sizesJoin.get("size"), size));
+			Join<Products, ProductSize>  productSizeJoin = root.join("productSizes");
+			Join<ProductSize, Sizes>  productSizeSizeJoin = productSizeJoin.join("size");
+			searchCriterias.add(cb.equal(productSizeSizeJoin.get("size"), size));
 		}
 		if ((categoryName != "") && (categoryName != null)) {
-			Join<Products, Categories> categoryJoin = root.join("category");
-			searchCriterias.add(cb.equal(categoryJoin.get("categoryName"), categoryName));
+			searchCriterias.add(cb.equal(root.get("brand"), categoryName));
 		}
 		if ((type != "") && (type != null)) {
 			searchCriterias.add(cb.equal(root.get("type"), type));
@@ -132,13 +133,16 @@ public class ProductService {
 
 	public Products save(ProductDTO productDTO) {
 		Products product =	new Products();
+		product.setProductId(productDTO.getProductId());
 		product.setProductName(productDTO.getProductName());
 		product.setBrand(productDTO.getBrand());
 		product.setColor(productDTO.getColor());
 		product.setDate(productDTO.getDate());
 		product.setType(productDTO.getType());
 		product.setBrand(productDTO.getBrand());
+		product.setDescription(productDTO.getDescription());
 		product.setPrice(productDTO.getPrice());
+		product.setQuantity(productDTO.getQuantity());
 		return productRepo.save(product);
 	}
 

@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,6 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		UserDetails userDetails = (UserDetails) new CustomUserDetails(user.getUserName(),
 				user.getEncryptedPassword(), grantList);
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, grantList);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return userDetails;
 	}
 }

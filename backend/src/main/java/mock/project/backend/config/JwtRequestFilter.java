@@ -40,6 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			jwtToken = requestTokenHeader.substring(7);
 			try {
 				username = tokenUtil.getUsernameFromToken(jwtToken);
+				logger.info("Username from Token: " + username);
 			} catch (IllegalArgumentException e) {
 				logger.error("Unable to get JWT Token");
 				;
@@ -52,13 +53,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+			logger.info("userDetails: " + userDetails);
 			if (tokenUtil.validateToken(jwtToken, userDetails)) {
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+				logger.info("usernamePasswordAuthenticationToken: " + usernamePasswordAuthenticationToken);
+				logger.info("usernamePasswordAuthenticationToken: " + SecurityContextHolder.getContext().getAuthentication());
 			}
 		}
 		chain.doFilter(request, response);

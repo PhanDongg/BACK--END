@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import mock.project.backend.entities.Images;
 import mock.project.backend.entities.Sizes;
 
@@ -15,6 +17,7 @@ public class ProductDTO {
 	private String description;
 	private String type;
 	private String color;
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate date;
 	private List<Sizes> sizes;
 	private int quantity;

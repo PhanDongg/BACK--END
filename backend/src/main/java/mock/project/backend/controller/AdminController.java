@@ -56,7 +56,12 @@ public class AdminController {
 	
 	@Autowired
 	private ProductSizeService productSizeService;
-
+	
+	// check
+		@GetMapping("/check")
+		public String checkUser() {
+			return "Deny";
+		}
 	// list all user
 	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTOReponse>> finAllUser(
@@ -93,7 +98,7 @@ public class AdminController {
 	}
 
 	// update product by id
-	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Products> updateProduct(@RequestBody ProductDTO product) {
 		logger.info("Updating product.....");
 		return ResponseEntity.ok(productService.save(product));
@@ -115,6 +120,11 @@ public class AdminController {
 		}
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
+	}
+	//list product no  paging
+	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ProductDTO>> finAllProductNoPaging() {
+		return ResponseEntity.ok(productService.findAllProductNoPaging());
 	}
 	//delete product
 	@DeleteMapping(value="product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

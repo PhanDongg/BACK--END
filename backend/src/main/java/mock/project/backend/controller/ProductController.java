@@ -100,7 +100,7 @@ public class ProductController {
 		}
 
 	// search product by filter
-	@GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> findProductByFilter(@RequestBody ProductRequest productRequest) {
 		logger.info("Sorting products by filter...");
 		return ResponseEntity.ok(productService.searchProductByFilter(productRequest));
@@ -118,10 +118,6 @@ public class ProductController {
 		}
 		return ResponseEntity.ok(producctDTO);
 	}
-
-	
-
-	
 
 	// list products by price ASC/DESC
 	@GetMapping(value = "/price", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -155,7 +151,7 @@ public class ProductController {
 			Pageable sortedByDateDesc = PageRequest.of(0, 20, Sort.by("date").descending());
 			return ResponseEntity.ok(productService.findAllProduct(sortedByDateDesc));
 		}
-		Pageable sortedByDateDesc = PageRequest.of(pageIndex, 5);
+		Pageable sortedByDateDesc = PageRequest.of(pageIndex, 10);
 		return ResponseEntity.ok(productService.findAllProduct(sortedByDateDesc));
 	}
 

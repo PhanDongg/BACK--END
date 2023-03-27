@@ -17,7 +17,17 @@ public class TokenUtil {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     private static final String secret = "truong";
+    
+    public String refreshToken(String token) {
+        final Date createdDate = new Date();
+        final Date expirationDate = new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000);
 
+        final Claims claims = getAllClaimsFromToken(token);
+        claims.setIssuedAt(createdDate);
+        claims.setExpiration(expirationDate);
+
+        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
+    }
     public String getUsernameFromToken(String token) {
         final Claims claims = getAllClaimsFromToken(token);
         return claims.getSubject();
