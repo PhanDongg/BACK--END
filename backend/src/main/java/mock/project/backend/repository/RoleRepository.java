@@ -14,4 +14,5 @@ public interface RoleRepository extends JpaRepository<Roles, Integer> {
 			+ "LEFT JOIN UserRole ur ON r.roleId = ur.role.roleId "
 			+ "WHERE ur.user.userId =?1")
 	List<String> findByRoleName(Integer userId);
+	
 }

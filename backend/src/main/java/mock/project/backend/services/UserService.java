@@ -43,7 +43,7 @@ public class UserService {
 		user.setUserId(userDTO.getUserId());
 		user.setUserName(userDTO.getUserName());
 		user.setEncryptedPassword((bCryptPasswordEncoder.encode(userDTO.getPassword())));;
-		user.setFullName(userDTO.getUserName());
+		user.setFullName(userDTO.getFullName());
 		user.setEmail(userDTO.getEmail());
 		user.setAddress(userDTO.getAddress());
 		user.setPhone(userDTO.getPhone());
@@ -57,8 +57,27 @@ public class UserService {
 		return user;
 	}
 	
-	public UserDTOReponse findByUserName(String userName) {
-		UserDTOReponse userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTOReponse.class);
+	public Users updateUserAccount(UserDTO userDTO) throws Exception {
+		Users user = new Users();
+		user.setUserId(userDTO.getUserId());
+		user.setUserName(userDTO.getUserName());
+		user.setEncryptedPassword((bCryptPasswordEncoder.encode(userDTO.getPassword())));;
+		user.setFullName(userDTO.getFullName());
+		user.setEmail(userDTO.getEmail());
+		user.setAddress(userDTO.getAddress());
+		user.setPhone(userDTO.getPhone());
+		user.setDateofBirth(userDTO.getDateofBirth());
+		user.setImage(userDTO.getImage());
+		user.setEnabled(true);
+		userRepo.save(user);
+		if(userDTO.getRole() != null) {
+		userRoleRepo.findByUser(user).setRole(userDTO.getRole());;
+		}
+		return user;
+	}
+	
+	public UserDTO findByUserName(String userName) {
+		UserDTO userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTO.class);
 		return userDTO;
 	}
 	
