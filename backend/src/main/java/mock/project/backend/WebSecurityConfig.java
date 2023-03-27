@@ -58,12 +58,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.authorizeRequests().antMatchers("/api/admin/**").access("hasRole('ROLE_ADMIN')");
 		http
-		.authorizeRequests().antMatchers("/api/order/**").access("hasRole('ROLE_USER','ROLE_ADMIN')");
+			.authorizeRequests().antMatchers("/api/order/**").access("hasRole('ROLE_USER','ROLE_ADMIN')");
+		
+		http.authorizeRequests()
+						.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login").logoutSuccessHandler(new CustomLogoutSuccessHandler());
         http       
         	.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+       http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
