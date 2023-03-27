@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.criteria.Order;
 
 import org.apache.log4j.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,9 @@ public class AdminController {
 	@Autowired
 	private ProductSizeService productSizeService;
 	
+	@Autowired
+	private ModelMapper modelMap;
+	
 	// check
 		@GetMapping("/check")
 		public String checkUser() {
@@ -106,9 +110,10 @@ public class AdminController {
 
 	// add new product
 	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Products saveProducts(@RequestBody ProductDTO product) {
+	public ProductDTO saveProducts(@RequestBody ProductDTO product) {
 		logger.info("Adding new product.....");
-		return productService.save(product);
+		ProductDTO productDTO = modelMap.map(productService.save(product), ProductDTO.class);
+		return productDTO;
 	}
 	//list all product
 	@GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)

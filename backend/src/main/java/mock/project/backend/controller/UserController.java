@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mock.project.backend.entities.Users;
+import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.request.OrderDTO;
 import mock.project.backend.request.UserDTO;
 import mock.project.backend.request.UserDTOReponse;
@@ -37,12 +39,16 @@ public class UserController {
 	private OrderService orderService;
 	
 	@Autowired
+	private RoleRepository roleRepo;
+	
+	@Autowired
 	private ModelMapper modelMap;
 	
 	//register new user
 	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> save(@RequestBody UserDTO user) throws Exception {
-		Users newUser = userService.registerUserAccount(user);
+	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) throws Exception {
+		userDTO.setRole(roleRepo.findById(2).get());
+		Users newUser = userService.registerUserAccount(userDTO);
 		if(newUser == null) {
 			return ResponseEntity.badRequest().build();		
 			}
@@ -52,7 +58,7 @@ public class UserController {
 	
 	//get userInfo
 	@GetMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTOReponse> getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
+	public ResponseEntity<UserDTO> getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
 		logger.info("Searching user by username...");
 		return ResponseEntity.ok(userService.findByUserName(username));
 	}
@@ -65,10 +71,12 @@ public class UserController {
 	}
 	//update 
 	@PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTOReponse updateInfoUser(@RequestParam(value="username" ,required = false)String username,@RequestBody UserDTO userTDO) throws Exception {
+	public UserDTOReponse updateInfoUser(@RequestParam(value="username" ,required = false)String username,@RequestBody UserDTO userTDO,BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 		logger.info("Updating userInf ..");
 		userTDO.setUserId(userService.findByUserName(username).getUserId());
-		UserDTOReponse userDTO = modelMap.map(userService.registerUserAccount(userTDO), UserDTOReponse.class);
+		userTDO.setUserName(username);
+		userTDO.setRole(roleRepo.findById(2).get());
+		UserDTOReponse userDTO = modelMap.map(userService.updateUserAccount(userTDO), UserDTOReponse.class);
 		return userDTO;
 	}
 
