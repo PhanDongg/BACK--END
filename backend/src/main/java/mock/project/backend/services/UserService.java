@@ -18,6 +18,7 @@ import mock.project.backend.entities.Users;
 import mock.project.backend.repository.UserRepository;
 import mock.project.backend.repository.UserRoleRepository;
 import mock.project.backend.request.ProductDTO;
+import mock.project.backend.request.User;
 import mock.project.backend.request.UserDTO;
 import mock.project.backend.request.UserDTOReponse;
 
@@ -38,24 +39,24 @@ public class UserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 		
-	public Users registerUserAccount(UserDTO userDTO) throws Exception {
-		Users user = new Users();
-		user.setUserId(userDTO.getUserId());
-		user.setUserName(userDTO.getUserName());
-		user.setEncryptedPassword((bCryptPasswordEncoder.encode(userDTO.getPassword())));;
-		user.setFullName(userDTO.getFullName());
-		user.setEmail(userDTO.getEmail());
-		user.setAddress(userDTO.getAddress());
-		user.setPhone(userDTO.getPhone());
-		user.setDateofBirth(userDTO.getDateofBirth());
-		user.setImage(userDTO.getImage());
-		user.setEnabled(true);
-		userRepo.save(user);
-		if(userDTO.getRole() != null) {
-		userRoleRepo.save(new UserRole(user,userDTO.getRole()));
-		}
-		return user;
-	}
+//	public Users registerUserAccount(UserDTO userDTO) throws Exception {
+//		Users user = new Users();
+//		user.setUserId(userDTO.getUserId());
+//		user.setUserName(userDTO.getUserName());
+//		user.setEncryptedPassword((bCryptPasswordEncoder.encode(userDTO.getPassword())));;
+//		user.setFullName(userDTO.getFullName());
+//		user.setEmail(userDTO.getEmail());
+//		user.setAddress(userDTO.getAddress());
+//		user.setPhone(userDTO.getPhone());
+//		user.setDateofBirth(userDTO.getDateofBirth());
+//		user.setImage(userDTO.getImage());
+//		user.setEnabled(true);
+//		userRepo.save(user);
+//		if(userDTO.getRole() != null) {
+//		userRoleRepo.save(new UserRole(user,userDTO.getRole()));
+//		}
+//		return user;
+//	}
 	
 	public Users updateUserAccount(UserDTO userDTO) throws Exception {
 		Users user = new Users();
@@ -77,7 +78,11 @@ public class UserService {
 	}
 	
 	public UserDTO findByUserName(String userName) {
-		UserDTO userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTO.class);
+		Users user = userRepo.findByUserName(userName);
+		if(user == null) {
+			return null;
+		}
+		UserDTO userDTO = modelMap.map(user, UserDTO.class);
 		return userDTO;
 	}
 	
@@ -92,6 +97,11 @@ public class UserService {
 
 	}
 	
-	
+	public Users saveUser(UserDTO user) { // fe gui ve userDTO -> be lay userDTO de luu vao Users
+		Users newUser = new Users();
+		newUser = modelMap.map(user, Users.class);
+		userRepo.save(newUser);
+		return newUser;
+	}
 
 }

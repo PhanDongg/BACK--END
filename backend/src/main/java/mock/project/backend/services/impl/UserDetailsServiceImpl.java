@@ -20,7 +20,7 @@ import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.repository.UserRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService { // cai nay la ben security
 	private Logger logger = Logger.getLogger(UserDetailsServiceImpl.class);
 
 	@Autowired

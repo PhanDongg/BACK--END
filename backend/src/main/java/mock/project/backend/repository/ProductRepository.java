@@ -19,5 +19,13 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
 	
 	void deleteById(Integer productId);
 	
-
+//	@Query("SELECT p FROM Products p WHERE p.type LIKE %:type%")
+//	List<Products> findByProductType(String type);
+	
+	List<Products> findByType(String type);
+	
+	@Query("Select p from Products p where category.categoryId=?1 and p.type = ?2")
+	List<Products> findByTypeAndCategory(Integer id, String type);
+	
+	
 }

@@ -156,7 +156,8 @@ public class ProductService {
 
 	public ProductDTO findByCategory(final Integer id) {
 		Optional<Products> product = productRepo.findById(id);
-		ProductDTO producctDTO = modelMap.map(product.get(), ProductDTO.class);
+		Products pro = product.get();
+		ProductDTO producctDTO = modelMap.map(pro, ProductDTO.class);
 		return producctDTO;
 	}
 
@@ -170,4 +171,31 @@ public class ProductService {
 		return productDTOs;
 //	 List<Products> passengers = repository.findAll(Sort.by(Sort.Direction.ASC, "Date"));
 	}
+	
+//	public List<ProductDTO> findProductByType(String type) {
+//		List<Products> products = new ArrayList<>();
+//		products = productRepo.findByProductType(type);
+//		List<ProductDTO> productDTOList = new ArrayList<>();
+//		for (Products product : products) {
+//			ProductDTO productDTO = modelMap.map(product, ProductDTO.class);
+//			productDTOList.add(productDTO);
+//		}
+//		return productDTOList;
+//	}
+	
+	public List<Products> findByProductType(String type) {
+		
+		List<Products> productList = new ArrayList<>();
+		productList = productRepo.findByType(type);
+		
+		return productList;
+	}
+	
+	public List<Products> findByTypeAndCategory(Integer id, String type) {
+		List<Products> productList = new ArrayList<>();
+		productList = productRepo.findByTypeAndCategory(id, type);
+		return productList;
+	}
+	
+	
 }

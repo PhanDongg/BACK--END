@@ -1,4 +1,4 @@
-	package mock.project.backend.controller;
+package mock.project.backend.controller;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mock.project.backend.entities.Roles;
 import mock.project.backend.entities.Users;
 import mock.project.backend.repository.RoleRepository;
 import mock.project.backend.request.OrderDTO;
@@ -29,49 +30,70 @@ import mock.project.backend.services.UserService;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	
+
 	private Logger logger = Logger.getLogger(UserController.class);
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private OrderService orderService;
-	
+
 	@Autowired
 	private RoleRepository roleRepo;
-	
+
 	@Autowired
 	private ModelMapper modelMap;
+
+	// register new user
+//	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) throws Exception {
+//		if (userService.findByUserName(userDTO.getUserName()) != null) {
+//			return ResponseEntity.ok("Username has been used");
+//		}
+//		userDTO.setRole(roleRepo.findById(2).get());
+//		Users newUser = userService.registerUserAccount(userDTO);
+//		if (newUser == null) {
+//			return ResponseEntity.badRequest().build();
+//		}
+//		return ResponseEntity.ok("Register successful!");
+//	}
 	
-	//register new user
-	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) throws Exception {
-		userDTO.setRole(roleRepo.findById(2).get());
-		Users newUser = userService.registerUserAccount(userDTO);
-		if(newUser == null) {
-			return ResponseEntity.badRequest().build();		
-			}
-		String msg = "Register successful!";
-		return ResponseEntity.ok(msg);	
+	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE) //tu dat
+//	public ResponseEntity<Users> saveNewUser(@RequestBody UserDTO user) {
+	public ResponseEntity<String> saveNewUser(@RequestBody UserDTO user) {
+		UserDTO dbUser = userService.findByUserName(user.getUserName());
+		if (dbUser == null) {
+			Roles role = roleRepo.findById(1).get();
+			user.setRole(role);
+			userService.saveUser(user);
+//			return ResponseEntity.ok(userService.saveUser(user));
+			return ResponseEntity.ok("Register success");
+		}
+		return ResponseEntity.ok("Register fail!");
+		
 	}
-	
-	//get userInfo
-	@GetMapping(value="/info", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UserDTO> getInfoByUserName(@RequestParam(value="username" ,required = false)String username) throws Exception {
+
+	// get userInfo
+	@GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserDTO> getInfoByUserName(
+			@RequestParam(value = "username", required = false) String username) throws Exception {
 		logger.info("Searching user by username...");
 		return ResponseEntity.ok(userService.findByUserName(username));
 	}
-	
-	//get list order of user
-	@GetMapping(value="/order", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<OrderDTO> getOrderByUserID(@RequestParam(value="userId",required = false)Integer userId) throws Exception {
+
+	// get list order of user
+	@GetMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<OrderDTO> getOrderByUserID(@RequestParam(value = "userId", required = false) Integer userId)
+			throws Exception {
 		logger.info("Searching order by id...");
 		return orderService.findListOrdersByUserId(userId);
 	}
-	//update 
-	@PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserDTOReponse updateInfoUser(@RequestParam(value="username" ,required = false)String username,@RequestBody UserDTO userTDO,BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+
+	// update
+	@PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+	public UserDTOReponse updateInfoUser(@RequestParam(value = "username", required = false) String username,
+			@RequestBody UserDTO userTDO, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
 		logger.info("Updating userInf ..");
 		userTDO.setUserId(userService.findByUserName(username).getUserId());
 		userTDO.setUserName(username);
@@ -81,4 +103,3 @@ public class UserController {
 	}
 
 }
-

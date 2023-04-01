@@ -1,5 +1,6 @@
 package mock.project.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -97,7 +98,7 @@ public class ProductController {
 	public ResponseEntity<List<Integer>> findSizeByProductId(@PathVariable("id") Integer productId) {
 		List<Integer> sizes =sizeService.findSizeByProductId(productId);
 		return ResponseEntity.ok(sizes);
-		}
+	}
 
 	// search product by filter
 	@PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -154,5 +155,33 @@ public class ProductController {
 		Pageable sortedByDateDesc = PageRequest.of(pageIndex, 10);
 		return ResponseEntity.ok(productService.findAllProduct(sortedByDateDesc));
 	}
+	
+	//list products by type
+//	@GetMapping(value="/type", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<List<ProductDTO>> findProductsByType(@RequestParam("type")String type) { // requestparam dung cho kieu tham so, pathvariable kieu id
+//		List<ProductDTO> products = productService.findProductByType(type);
+//		return ResponseEntity.ok(products);
+//	}
+	
+	@GetMapping("/type")
+	public ResponseEntity<List<ProductDTO>> findByProductType(@RequestParam("ttype")String type) {
+		List<Products> products = productService.findByProductType(type);
+		List<ProductDTO> productDTO = new ArrayList<>();
+		for (Products p : products) {
+			ProductDTO pDto = modelMap.map(p, ProductDTO.class); 
+			productDTO.add(pDto);
+		}
+		return ResponseEntity.ok(productDTO);
+	}
 
+	@GetMapping("/category/{id}/type")
+	public ResponseEntity<List<ProductDTO>> findByTypeAndCategory(@RequestParam("ttype")String type, @PathVariable("id")Integer id) {
+		List<Products> products = productService.findByTypeAndCategory(id, type);
+		List<ProductDTO> productDTO = new ArrayList<>();
+		for (Products p : products) {
+			ProductDTO pdto = modelMap.map(p, ProductDTO.class);
+			productDTO.add(pdto);
+		}
+		return ResponseEntity.ok(productDTO);
+	}
 }
