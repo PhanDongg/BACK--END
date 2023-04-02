@@ -44,16 +44,18 @@ public class UserController {
 	@Autowired
 	private ModelMapper modelMap;
 	
-	//register new user
+	//register new user back-end
 	@PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> save(@RequestBody UserDTO userDTO) throws Exception {
+		if(userService.findByUserName(userDTO.getUserName()) != null) {
+			return ResponseEntity.ok("Username has been used");
+		}
 		userDTO.setRole(roleRepo.findById(2).get());
 		Users newUser = userService.registerUserAccount(userDTO);
 		if(newUser == null) {
 			return ResponseEntity.badRequest().build();		
 			}
-		String msg = "Register successful!";
-		return ResponseEntity.ok(msg);	
+		return ResponseEntity.ok("Register successful!");	
 	}
 	
 	//get userInfo

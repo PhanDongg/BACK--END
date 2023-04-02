@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import mock.project.backend.entities.Categories;
 import mock.project.backend.entities.Images;
 import mock.project.backend.entities.Sizes;
 
@@ -22,6 +25,7 @@ public class ProductDTO {
 	private List<Sizes> sizes;
 	private int quantity;
 	private String brand;
+	private Categories category;
 	private List<Images> images;
 	
 	
@@ -91,4 +95,11 @@ public class ProductDTO {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+	public Categories getCategory() {
+		return category;
+	}
+	public void setCategory(Categories category) {
+		this.category = category;
+	}
+	
 }

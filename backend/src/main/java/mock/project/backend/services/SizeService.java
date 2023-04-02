@@ -30,14 +30,9 @@ public class SizeService {
 	@Autowired
 	private ModelMapper modelMap;
 	
-	public List<SizeDTO> findAllSizes() {
-		List<SizeDTO> sizeDTOs = new ArrayList<>();
+	public List<Sizes> findAllSizes() {
 		List<Sizes> sizes = sizeRepo.findAll();
-		for (Sizes size : sizes) {
-			SizeDTO categoryDTO = modelMap.map(size, SizeDTO.class);
-			sizeDTOs.add(categoryDTO);
-		}
-		return sizeDTOs;
+		return sizes;
 	}
 	
 	public List<Integer> findSizeByProductId(Integer productId){

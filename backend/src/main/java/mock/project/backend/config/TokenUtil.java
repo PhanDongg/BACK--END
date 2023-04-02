@@ -15,7 +15,7 @@ import java.util.function.Function;
 @Component
 public class TokenUtil {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
     private static final String secret = "truong";
     
     public String refreshToken(String token) {

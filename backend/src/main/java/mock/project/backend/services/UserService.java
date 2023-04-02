@@ -77,21 +77,21 @@ public class UserService {
 	}
 	
 	public UserDTO findByUserName(String userName) {
-		UserDTO userDTO = modelMap.map(userRepo.findByUserName(userName), UserDTO.class);
+		Users user = userRepo.findByUserName(userName);
+		if(user == null) {
+			return null;
+		}
+		UserDTO userDTO = modelMap.map(user, UserDTO.class);
 		return userDTO;
 	}
 	
-	public List<UserDTOReponse> findAllUser(Pageable pageable) {
-		Page<Users> users = userRepo.findAll(pageable);
-		List<UserDTOReponse> userDTOs = new ArrayList<>();
-		for (Users user : users) {
-			UserDTOReponse userDTOResponse = modelMap.map(user, UserDTOReponse.class);
-			userDTOs.add(userDTOResponse);
-		}
-		return userDTOs;
+	public List<Users> findAllUser() {
+		return userRepo.findAll();
 
 	}
 	
-	
+	public List<Users> findAllAdmin() {
+		return userRepo.findAllAdmin();
+	}
 
 }

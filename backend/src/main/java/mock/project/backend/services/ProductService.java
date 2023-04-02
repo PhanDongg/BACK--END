@@ -20,10 +20,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import mock.project.backend.entities.Categories;
+import mock.project.backend.entities.Images;
 import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Sizes;
+import mock.project.backend.repository.CategoryRepository;
+import mock.project.backend.repository.ImageRepository;
 import mock.project.backend.repository.ProductRepository;
+import mock.project.backend.repository.ProductSizeRepository;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.ProductRequest;
 
@@ -36,6 +40,15 @@ public class ProductService {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	private CategoryRepository cateRepo;
+	
+	@Autowired
+	private ImageRepository imageRepo;
+	
+	@Autowired
+	private ProductSizeRepository productSizeRepo;
 
 	@Autowired
 	private ModelMapper modelMap;
@@ -71,6 +84,29 @@ public class ProductService {
 		return productDTOs;
 	}
 
+	public List<ProductDTO> findPoductByCategoryAndType(Integer category,String type) {
+		List<Products> products = new ArrayList<>();
+		products = productRepo.findByCategoryAndType(category,type);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
+		}
+		return productDTOs;
+	}
+	
+	public List<ProductDTO> findPoductByType(String type) {
+		List<Products> products = new ArrayList<>();
+		products = productRepo.findByType(type);
+		List<ProductDTO> productDTOs = new ArrayList<>();
+		for (Products product : products) {
+			ProductDTO producctDTO = modelMap.map(product, ProductDTO.class);
+			productDTOs.add(producctDTO);
+		}
+		return productDTOs;
+	}
+	
+	
 	public List<ProductDTO> findPoductByCategory(Integer category) {
 		List<Products> products = new ArrayList<>();
 		products = productRepo.findByCategory(category);
@@ -145,7 +181,40 @@ public class ProductService {
 		product.setQuantity(productDTO.getQuantity());
 		return productRepo.save(product);
 	}
-
+	
+	public Products save2(ProductDTO productDTO) {
+		Integer categoryId = Integer.valueOf(productDTO.getCategory().getCategoryName());
+		String string = productDTO.getImages().get(0).getLink();
+		String[] parts = string.split(",");
+		
+		Products product =	new Products();
+		product.setCategory(cateRepo.findById(categoryId).get());
+		product.setProductName(productDTO.getProductName());
+		product.setBrand(productDTO.getBrand());
+		product.setColor(productDTO.getColor());
+		product.setDate(productDTO.getDate());
+		product.setType(productDTO.getType());
+		product.setBrand(productDTO.getBrand());
+		product.setDescription(productDTO.getDescription());
+		product.setPrice(productDTO.getPrice());
+		product.setQuantity(productDTO.getQuantity());
+		List<ProductSize> productSize =  new ArrayList<>();
+			for(Sizes size : productDTO.getSizes()) {
+				productSizeRepo.save(new ProductSize(product,size));
+			}
+		List<Images> images =  new ArrayList<>();
+		for (String link : parts) {
+	    	if( link ==""|| link.contains("null") ){
+	    		continue;
+	    	}
+	    	images.add(new Images(link));
+	    }
+		for(Images img: images) {
+			img.setProduct(product);
+			imageRepo.save(img);
+		}
+		return productRepo.save(product);
+	}
 	public void delete(Integer productId) {
 		productRepo.deleteById(productId);
 	}

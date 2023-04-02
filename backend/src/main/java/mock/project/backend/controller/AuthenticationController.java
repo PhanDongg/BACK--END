@@ -50,7 +50,6 @@ public class AuthenticationController {
 			new SecurityContextLogoutHandler().logout(request, response, authentication);
 			SecurityContextHolder.getContext().setAuthentication(null);
 		}
-		System.out.println(authentication);
 		return ResponseEntity.ok("Logout successful!");
 	}
 

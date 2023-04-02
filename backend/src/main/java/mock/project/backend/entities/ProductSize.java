@@ -30,6 +30,11 @@ public class ProductSize {
 	public ProductSize() {
 		super();
 	}
+	
+	public ProductSize(Sizes size) {
+		super();
+		this.size = size;
+	}
 
 	public ProductSize( Products product, Sizes size) {
 		super();

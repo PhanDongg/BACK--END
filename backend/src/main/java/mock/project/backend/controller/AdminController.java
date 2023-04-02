@@ -1,5 +1,6 @@
 package mock.project.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Order;
@@ -23,9 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.jsf.FacesContextUtils;
 
+import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
+import mock.project.backend.entities.Sizes;
 import mock.project.backend.entities.Status;
+import mock.project.backend.entities.Users;
+import mock.project.backend.repository.CategoryRepository;
 import mock.project.backend.repository.OrderRepository;
+import mock.project.backend.repository.SizeRepository;
 import mock.project.backend.request.OrderDTO;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.UserDTO;
@@ -48,36 +54,49 @@ public class AdminController {
 
 	@Autowired
 	private OrderService orderService;
-	
+
 	@Autowired
 	private StatusService statusService;
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private ProductSizeService productSizeService;
-	
+
+	@Autowired
+	private CategoryRepository cateRepo;
+
+	@Autowired
+	private SizeRepository sizeRepo;
+
 	@Autowired
 	private ModelMapper modelMap;
-	
+
 	// check
-		@GetMapping("/check")
-		public String checkUser() {
-			return "Deny";
-		}
+	@GetMapping("/check")
+	public String checkUser() {
+		return "Deny";
+	}
+
 	// list all user
 	@GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<UserDTOReponse>> finAllUser(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
-		if (pageIndex == null || pageIndex == 0) {
-			Pageable pageable = PageRequest.of(0, 5);
-			return ResponseEntity.ok(userService.findAllUser(pageable));
+		List<Users> users = userService.findAllUser();
+		List<Users> admin = userService.findAllAdmin();
+		for (Users ad : admin) {
+			users.remove(ad);
 		}
-		Pageable pageable = PageRequest.of(pageIndex, 5);
-		return ResponseEntity.ok(userService.findAllUser(pageable));
+		List<UserDTOReponse> userDTOs = new ArrayList<>();
+		for (Users user : users) {
+			UserDTOReponse userDTOResponse = modelMap.map(user, UserDTOReponse.class);
+			userDTOs.add(userDTOResponse);
+		}
+		return ResponseEntity.ok(userDTOs);
 	}
-	//list all order
+
+	// list all order
 	@GetMapping(value = "/order", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OrderDTO>> finAllOrder(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
@@ -88,10 +107,11 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(orderService.findAllOrder(pageable));
 	}
-	//update order status
+
+	// update order status
 	@PutMapping(value = "/order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseTransfer updateStatusOrder(@RequestParam(name="orderId") Integer orderId ,
-												@RequestParam(name="statusId") Integer statusId) {
+	public ResponseTransfer updateStatusOrder(@RequestParam(name = "orderId") Integer orderId,
+			@RequestParam(name = "statusId") Integer statusId) {
 		logger.info("Searching order by orderId...");
 		OrderDTO orderDTO = orderService.findOrderById(orderId);
 		Status status = statusService.findStatusById(statusId);
@@ -110,12 +130,23 @@ public class AdminController {
 
 	// add new product
 	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductDTO saveProducts(@RequestBody ProductDTO product) {
+	public ProductDTO saveProducts(@RequestBody ProductDTO product,
+			@RequestParam(name = "sizes", required = false) String size) {
 		logger.info("Adding new product.....");
-		ProductDTO productDTO = modelMap.map(productService.save(product), ProductDTO.class);
+		List<Sizes> sizes = new ArrayList<>();
+		String[] array = size.split(",");
+		for (String letter : array) {
+			if (letter.length() == 4 || letter == "" || letter.contains("null")) {
+				continue;
+			}
+			sizes.add(sizeRepo.findById(Integer.valueOf(letter)).get());
+		}
+		product.setSizes(sizes);
+		ProductDTO productDTO = modelMap.map(productService.save2(product), ProductDTO.class);
 		return productDTO;
 	}
-	//list all product
+
+	// list all product
 	@GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProduct(
 			@RequestParam(name = "page", required = false) Integer pageIndex) {
@@ -126,33 +157,34 @@ public class AdminController {
 		Pageable pageable = PageRequest.of(pageIndex, 5);
 		return ResponseEntity.ok(productService.findAllProduct(pageable));
 	}
-	//list product no  paging
+
+	// list product no paging
 	@GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProductNoPaging() {
 		return ResponseEntity.ok(productService.findAllProductNoPaging());
 	}
-	//delete product
-	@DeleteMapping(value="product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> detleteProduct(@PathVariable("id")Integer productId) throws Exception{
-		Products product =productService.findById(productId);
-		
-		if(product == null) {
-			 new Exception("Product not found: " + productId);
+
+	// delete product
+	@DeleteMapping(value = "product/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> detleteProduct(@PathVariable("id") Integer productId) throws Exception {
+		Products product = productService.findById(productId);
+
+		if (product == null) {
+			new Exception("Product not found: " + productId);
 			return ResponseEntity.ok(new ResponseTransfer("Could not found"));
 		}
 		productSizeService.deleteByProduct(product);
 		productService.delete(product.getProductId());
 		return ResponseEntity.ok(new ResponseTransfer("Delete successful!"));
 	}
-	
-	@DeleteMapping(value="order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseTransfer detleteOrder(@PathVariable("id")Integer productId){
+	//delete order
+	@DeleteMapping(value = "order/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseTransfer detleteOrder(@PathVariable("id") Integer productId) {
 		ProductDTO product = productService.findPoductById(productId);
-		if(product==null) {
+		if (product == null) {
 			return new ResponseTransfer("Not found");
 		}
 		productService.delete(product.getProductId());
 		return new ResponseTransfer("Delete successful!");
 	}
 }
-

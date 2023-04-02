@@ -72,13 +72,24 @@ public class ProductController {
 		return ResponseEntity.ok(productService.findPoductBySearch(searchField));
 	}
 	
-	//list product by category
+	// list product by category
 	@GetMapping(value = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> findProductByCategory(
-			@PathVariable(name = "id", required = false) Integer categoryId)
-			 {
-		return ResponseEntity.ok(productService.findPoductByCategory(categoryId));
+			@PathVariable(name = "id", required = false) Integer categoryId,
+			@RequestParam(name = "type", required = false) String type) {
+		if (type == null || type == "") {
+			return ResponseEntity.ok(productService.findPoductByCategory(categoryId));
+		}
+		return ResponseEntity.ok(productService.findPoductByCategoryAndType(categoryId, type));
 	}
+	
+	// list product by type
+	@GetMapping(value = "/gender", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ProductDTO>> findProductByType(
+			@RequestParam(name = "type", required = false) String type) {
+		return ResponseEntity.ok(productService.findPoductByType(type));
+	}
+
 
 	// list categories
 	@GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,7 +99,7 @@ public class ProductController {
 
 	// list sizes
 	@GetMapping(value = "/sizes", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<SizeDTO>> findAllSize() {
+	public ResponseEntity<List<Sizes>> findAllSize() {
 		return ResponseEntity.ok(sizeService.findAllSizes());
 	}
 	
