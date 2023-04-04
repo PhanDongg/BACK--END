@@ -31,19 +31,22 @@ public class Products implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer productId;
 	
-	@Column(name="product_name",columnDefinition = "nvarchar(50)")
+	@Column(name = "product_code")
+	private String productCode;
+	
+	@Column(name="product_name",columnDefinition = "nvarchar(225)")
 	private String productName;
 	
 	@Column(name="price")
 	private double price;
 	
-	@Column(name="description", length = 50)
+	@Column(name="description")
 	private String description;
 	
-	@Column(name="type",columnDefinition = "nvarchar(50)")
+	@Column(name="type",columnDefinition = "nvarchar(225)")
 	private String type;
 	
-	@Column(name="color",columnDefinition = "nvarchar(50)")
+	@Column(name="color",columnDefinition = "nvarchar(225)")
 	private String color;
 	
 	@Column(name="quantity")
@@ -52,7 +55,7 @@ public class Products implements Serializable{
 	@Column(name="date")
 	private LocalDate date;
 	
-	@Column(name="brand", length = 50)
+	@Column(name="brand")
 	private String brand;
 	
 	@ManyToOne
@@ -99,6 +102,26 @@ public class Products implements Serializable{
 		this.brand = brand;
 		this.category = category;
 		this.images = images;
+	}
+
+	public Products(Integer productId, String productCode, String productName, double price, String description,
+			String type, String color, int quantity, LocalDate date, String brand, Categories category,
+			Set<Items> items, Set<Images> images, Set<ProductSize> productSizes) {
+		super();
+		this.productId = productId;
+		this.productCode = productCode;
+		this.productName = productName;
+		this.price = price;
+		this.description = description;
+		this.type = type;
+		this.color = color;
+		this.quantity = quantity;
+		this.date = date;
+		this.brand = brand;
+		this.category = category;
+		this.items = items;
+		this.images = images;
+		this.productSizes = productSizes;
 	}
 
 	public Integer getProductId() {
@@ -198,4 +221,21 @@ public class Products implements Serializable{
 		this.items = items;
 	}
 
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
+	public Set<ProductSize> getProductSizes() {
+		return productSizes;
+	}
+
+	public void setProductSizes(Set<ProductSize> productSizes) {
+		this.productSizes = productSizes;
+	}
+
+	
 }

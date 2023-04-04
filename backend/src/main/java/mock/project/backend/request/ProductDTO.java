@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import mock.project.backend.entities.Categories;
 import mock.project.backend.entities.Images;
 import mock.project.backend.entities.Sizes;
 
 public class ProductDTO {
 		
 	private Integer productId;
+	public String productCode;
 	private String productName;
 	private double price;
 	private String description;
@@ -23,11 +25,20 @@ public class ProductDTO {
 	private int quantity;
 	private String brand;
 	private List<Images> images;
+	private Categories category;
 	
 	
 	public Integer getProductId() {
 		return productId;
 	}
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
 	public void setProductId(Integer productId) {
 		this.productId = productId;
 	}
@@ -91,4 +102,13 @@ public class ProductDTO {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+	public Categories getCategory() {
+		return category;
+	}
+	public void setCategory(Categories category) {
+		this.category = category;
+	}
+
+	
+	
 }

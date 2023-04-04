@@ -1,5 +1,6 @@
 package mock.project.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.Order;
@@ -24,8 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.jsf.FacesContextUtils;
 
 import mock.project.backend.entities.Products;
+import mock.project.backend.entities.Sizes;
 import mock.project.backend.entities.Status;
 import mock.project.backend.repository.OrderRepository;
+import mock.project.backend.repository.SizeRepository;
 import mock.project.backend.request.OrderDTO;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.UserDTO;
@@ -57,6 +60,10 @@ public class AdminController {
 	
 	@Autowired
 	private ProductSizeService productSizeService;
+	
+	@Autowired
+	private SizeRepository sizeRepo;
+
 	
 	@Autowired
 	private ModelMapper modelMap;
@@ -110,11 +117,24 @@ public class AdminController {
 
 	// add new product
 	@PostMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductDTO saveProducts(@RequestBody ProductDTO product) {
+	public ProductDTO saveProducts(@RequestBody ProductDTO product, @RequestParam("sizeArr")String sizeString) {
 		logger.info("Adding new product.....");
+		System.out.println("Lay dc roi:" + sizeString);
+		System.out.println(sizeString.split(",")); 
+		String[] newSizeArr = sizeString.split(",");
+		List<Sizes> sizeList = new ArrayList<>();
+		for (int i=0; i<newSizeArr.length; i++) {
+			if (newSizeArr[i].length() == 4) {
+				continue;
+			}
+			sizeRepo.findById(Integer.valueOf(newSizeArr[i])); //1 2 3 --> luon luon tra ve optional<sizes>
+			sizeList.add(sizeRepo.findById(Integer.valueOf(newSizeArr[i])).get());
+		}
+		product.setSizes(sizeList);
 		ProductDTO productDTO = modelMap.map(productService.save(product), ProductDTO.class);
 		return productDTO;
 	}
+	
 	//list all product
 	@GetMapping(value = "/product", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductDTO>> finAllProduct(

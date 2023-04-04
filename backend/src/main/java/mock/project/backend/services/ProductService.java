@@ -20,10 +20,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import mock.project.backend.entities.Categories;
+import mock.project.backend.entities.Images;
 import mock.project.backend.entities.ProductSize;
 import mock.project.backend.entities.Products;
 import mock.project.backend.entities.Sizes;
+import mock.project.backend.repository.CategoryRepository;
+import mock.project.backend.repository.ImageRepository;
 import mock.project.backend.repository.ProductRepository;
+import mock.project.backend.repository.ProductSizeRepository;
 import mock.project.backend.request.ProductDTO;
 import mock.project.backend.request.ProductRequest;
 
@@ -40,6 +44,15 @@ public class ProductService {
 	@Autowired
 	private ModelMapper modelMap;
 
+	@Autowired
+	private CategoryRepository catRepo;
+	
+	@Autowired
+	private ProductSizeRepository productSizeRepo;
+	
+	@Autowired
+	private ImageRepository imageRepo;
+
 	public List<ProductDTO> findAllProduct(Pageable pageable) {
 		Page<Products> products = productRepo.findAll(pageable);
 		List<ProductDTO> productDTOs = new ArrayList<>();
@@ -49,8 +62,8 @@ public class ProductService {
 		}
 		return productDTOs;
 	}
-	
-	public List<ProductDTO> findAllProductNoPaging( ){
+
+	public List<ProductDTO> findAllProductNoPaging() {
 		List<Products> products = productRepo.findAll();
 		List<ProductDTO> productDTOs = new ArrayList<>();
 		for (Products product : products) {
@@ -106,8 +119,8 @@ public class ProductService {
 			searchCriterias.add(cb.equal(root.get("color"), color));
 		}
 		if ((size != 0) && (size < 50)) {
-			Join<Products, ProductSize>  productSizeJoin = root.join("productSizes");
-			Join<ProductSize, Sizes>  productSizeSizeJoin = productSizeJoin.join("size");
+			Join<Products, ProductSize> productSizeJoin = root.join("productSizes");
+			Join<ProductSize, Sizes> productSizeSizeJoin = productSizeJoin.join("size");
 			searchCriterias.add(cb.equal(productSizeSizeJoin.get("size"), size));
 		}
 		if ((categoryName != "") && (categoryName != null)) {
@@ -132,8 +145,13 @@ public class ProductService {
 	}
 
 	public Products save(ProductDTO productDTO) {
-		Products product =	new Products();
-		product.setProductId(productDTO.getProductId());
+		Products product = new Products();
+		productDTO.getCategory().getCategoryName(); // 2
+		String[] imageArr = productDTO.getImages().get(0).getLink().split(",");
+		
+		Optional<Categories> category = catRepo.findById(Integer.valueOf(productDTO.getCategory().getCategoryName())); // id
+																													// =
+		product.setCategory(category.get()); // get lay object ben trong
 		product.setProductName(productDTO.getProductName());
 		product.setBrand(productDTO.getBrand());
 		product.setColor(productDTO.getColor());
@@ -143,8 +161,36 @@ public class ProductService {
 		product.setDescription(productDTO.getDescription());
 		product.setPrice(productDTO.getPrice());
 		product.setQuantity(productDTO.getQuantity());
+		product.setProductCode(productDTO.getProductCode());
+		
+		for (String link : imageArr) {
+			Images images = new Images();
+			images.setProduct(product);
+			images.setLink(link);
+			imageRepo.save(images);
+			
+		}
+		
+		for (Sizes s : productDTO.getSizes()) {
+			ProductSize ps = new ProductSize();
+			ps.setProduct(product);
+			ps.setSize(s);
+			productSizeRepo.save(ps);
+		}
+
+		
 		return productRepo.save(product);
 	}
+
+	/*
+	 * public Products saveProduct(ProductDTO product) { Products newProduct = new
+	 * Products(); product.getCategory().getCategoryName(); // 2
+	 * Optional<Categories> category =
+	 * catRepo.findById(Integer.valueOf(product.getCategory().getCategoryName()));
+	 * // id // = // 2 newProduct.setCategory(category.get()); // get lay object ben
+	 * trong newProduct = modelMap.map(product, Products.class);
+	 * productRepo.save(newProduct); return newProduct; }
+	 */
 
 	public void delete(Integer productId) {
 		productRepo.deleteById(productId);
@@ -171,7 +217,7 @@ public class ProductService {
 		return productDTOs;
 //	 List<Products> passengers = repository.findAll(Sort.by(Sort.Direction.ASC, "Date"));
 	}
-	
+
 //	public List<ProductDTO> findProductByType(String type) {
 //		List<Products> products = new ArrayList<>();
 //		products = productRepo.findByProductType(type);
@@ -182,20 +228,19 @@ public class ProductService {
 //		}
 //		return productDTOList;
 //	}
-	
+
 	public List<Products> findByProductType(String type) {
-		
+
 		List<Products> productList = new ArrayList<>();
 		productList = productRepo.findByType(type);
-		
+
 		return productList;
 	}
-	
+
 	public List<Products> findByTypeAndCategory(Integer id, String type) {
 		List<Products> productList = new ArrayList<>();
 		productList = productRepo.findByTypeAndCategory(id, type);
 		return productList;
 	}
-	
-	
+
 }

@@ -361,9 +361,12 @@ public class BackendApplication {
 //				
 //					//set image to product and vice versa
 //					int x =0;
+//					int a =1;
 //					for(Products product: productadidas) {
 //						product.setDate(LocalDate.of(2012, 8, 2));
+//						product.setProductCode("A"+a);
 //						productRepo.save(product);
+//						a++;
 //						for(int i=x;i<imageAdidas.size();i++) {
 //							imageAdidas.get(i).setProduct(product);
 //							imageRepo.save(imageAdidas.get(i));
@@ -375,11 +378,18 @@ public class BackendApplication {
 //								x = x+ 4;
 //								break;
 //							}
+//							
+//							
+//						}
+//						if (a==11) {
+//							a=1;
 //						}
 //					}
 //					for(Products product: productPuma) {
 //						product.setDate(LocalDate.of(2013, 8, 2));
+//						product.setProductCode("P"+a);
 //						productRepo.save(product);
+//						a++;
 //						for(int i=x;i<imagePuma.size();i++) {
 //							imagePuma.get(i).setProduct(product);
 //							imageRepo.save(imagePuma.get(i));
@@ -392,10 +402,15 @@ public class BackendApplication {
 //								break;
 //							}
 //						}
+//						if (a==11) {
+//							a=1;
+//						}
 //					}
 //					for(Products product: productnike) {
 //						product.setDate(LocalDate.of(2019, 8, 2));
+//						product.setProductCode("N"+a);
 //						productRepo.save(product);
+//						a++;
 //						for(int i=x;i<imageNike.size();i++) {
 //							imageNike.get(i).setProduct(product);
 //							imageRepo.save(imageNike.get(i));
@@ -408,11 +423,16 @@ public class BackendApplication {
 //								break;
 //							}
 //						}
+//						if (a==11) {
+//							a=1;
+//						}
 //					}
 //					
 //					for(Products product: productreebok) {
 //						product.setDate(LocalDate.of(2022, 8, 2));
+//						product.setProductCode("R"+a);
 //						productRepo.save(product);
+//						a++;
 //						for(int i=x;i<imageReebok.size();i++) {
 //							imageReebok.get(i).setProduct(product);
 //							imageRepo.save(imageReebok.get(i));
@@ -424,6 +444,9 @@ public class BackendApplication {
 //								x = x+ 4;
 //								break;
 //							}
+//						}
+//						if (a==11) {
+//							a=1;
 //						}
 //					}
 //					
