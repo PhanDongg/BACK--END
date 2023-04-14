@@ -33,10 +33,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		Users user = userRepo.findByUserName(userName);
 		if (user == null) {
-			logger.error("User not found! " + userName);
+			logger.error("username not found: " + userName);
 			throw new UsernameNotFoundException("User " + userName + " was not found in the database");
 		}
-		logger.info("Found: " + user);
+		logger.info("account found: " + user);
 		List<String> roleNames = roleRepo.findByRoleName(user.getUserId());
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 		if (roleNames != null) {

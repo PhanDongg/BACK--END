@@ -23,34 +23,33 @@ public class Users implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	
-	@Column(name="user_name", length = 50)
+	@Column(name="user_name", columnDefinition = "varchar(50)")
 	private String userName;
 	
 	@Column(name = "encrypted_password", length = 128)
 	private String encryptedPassword;
 	
-	@Column(name="full_name", length = 50)
+	@Column(name="full_name", columnDefinition = "nvarchar(50)")
 	private String fullName;
 	
-	@Column(name="email", length = 255)
+	@Column(name="email", columnDefinition = "varchar(255)")
 	private String email;
 	
-	@Column(name="address", length = 50)
+	@Column(name="address", columnDefinition = "nvarchar(255)")
 	private String address;
 	
-	@Column(name="phone", length = 25)
+	@Column(name="phone", columnDefinition = "varchar(25)")
 	private String phone;
 	
 	@Column(name="date_of_birth")
 	private LocalDate dateofBirth;
 	
-	@Column(name="image",length = 255)
+	@Column(name="image", length = 255)
 	private String image;
 	
 	@Column(name = "enabled")
 	private Boolean enabled;
 	
-
 	@OneToMany(cascade = CascadeType.ALL,mappedBy="user")
 	private Set<Orders> orders;
 	
